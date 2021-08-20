@@ -1,0 +1,15 @@
+PacketId: Name
+1: AccountAuthenticationResult
+2: CharacterSelectionInfoResult
+3: CharacterCreationResult
+4: CharacterDeletionResult
+5: CharacterSlotUpdate
+6: CharacterSelectUpdate
+7: EnterWorldRequest
+8: ExitWorldRequest
+9: LocationUpdateRequest
+10: AnimatorUpdateRequest
+11: ObjectInfoRequest
+12: PlayerOptionsUpdate
+13: ChatRequest
+14: ChangeTargetRequest

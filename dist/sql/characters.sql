@@ -1,0 +1,22 @@
+CREATE TABLE IF NOT EXISTS `characters` (
+  `account` varchar(20) DEFAULT NULL,
+  `name` varchar(25) DEFAULT NULL,
+  `slot` int(2) DEFAULT '0',
+  `selected` tinyint(1) DEFAULT '1',
+  `race` int(2) DEFAULT '0',
+  `height` double DEFAULT '0.5',
+  `belly` double DEFAULT '0.5',
+  `hair_type` int(4) DEFAULT '0',
+  `hair_color` MEDIUMINT UNSIGNED NOT NULL DEFAULT 0x29222B,
+  `skin_color` MEDIUMINT UNSIGNED NOT NULL DEFAULT 0xF1D1BD,
+  `eye_color` MEDIUMINT UNSIGNED NOT NULL DEFAULT 0x29222B,
+  `x` double DEFAULT '4519.419',
+  `y` double DEFAULT '67.86826',
+  `z` double DEFAULT '3830.602',
+  `heading` double DEFAULT '0',
+  `experience` int(8) DEFAULT '0',
+  `hp` int(8) DEFAULT '100',
+  `mp` int(8) DEFAULT '100',
+  `access_level` int(2) DEFAULT '0',
+  `creation_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
