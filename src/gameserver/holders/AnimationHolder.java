@@ -2,7 +2,7 @@ package gameserver.holders;
 
 /**
  * @author Pantelis Andrianakis
- * @version April 21st 2019
+ * @since April 21st 2019
  */
 public class AnimationHolder
 {

@@ -15,7 +15,7 @@ import gnu.trove.map.hash.TLongObjectHashMap;
 
 /**
  * @author Pantelis Andrianakis
- * @version May 5th 2019
+ * @since May 5th 2019
  */
 public class ItemData
 {

@@ -9,11 +9,11 @@ import gameserver.network.client.sendable.AnimatorUpdate;
 
 /**
  * @author Pantelis Andrianakis
- * @version February 4th 2019
+ * @since February 4th 2019
  */
 public class AnimatorUpdateRequest
 {
-	public AnimatorUpdateRequest(GameClient client, ReceivablePacket packet)
+	public static void process(GameClient client, ReceivablePacket packet)
 	{
 		// Get player.
 		final Player player = client.getActiveChar();
@@ -30,7 +30,7 @@ public class AnimatorUpdateRequest
 		final boolean isGrounded = packet.readByte() == 1;
 		
 		// Set last known world object animations.
-		player.SetAnimations(new AnimationHolder(velocityX, velocityZ, triggerJump, isInWater, isGrounded));
+		player.setAnimations(new AnimationHolder(velocityX, velocityZ, triggerJump, isInWater, isGrounded));
 		
 		// Broadcast movement.
 		WorldManager.broadcastPacketToVisiblePlayers(player, new AnimatorUpdate(player.getObjectId(), velocityX, velocityZ, triggerJump, isInWater, isGrounded));

@@ -6,11 +6,11 @@ import gameserver.network.client.sendable.LocationUpdate;
 
 /**
  * @author Pantelis Andrianakis
- * @version November 29th 2019
+ * @since November 29th 2019
  */
 public class ReturnCommand
 {
-	public static void Handle(Player player)
+	public static void handle(Player player)
 	{
 		player.setTeleporting();
 		player.setLocation(Config.STARTING_LOCATION);

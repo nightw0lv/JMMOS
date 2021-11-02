@@ -8,11 +8,11 @@ import gameserver.managers.WorldManager;
 
 /**
  * @author Pantelis Andrianakis
- * @version November 29th 2019
+ * @since November 29th 2019
  */
 public class TellCommand
 {
-	public static void Handle(Player sender, String lowercaseMessage, String message)
+	public static void handle(Player sender, String lowercaseMessage, String message)
 	{
 		final String[] lowercaseMessageSplit = lowercaseMessage.split(" ");
 		if (lowercaseMessageSplit.length < 3) // Check for parameters.

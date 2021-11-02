@@ -10,11 +10,11 @@ import gameserver.network.client.GameClient;
 
 /**
  * @author Pantelis Andrianakis
- * @version November 29th 2019
+ * @since November 29th 2019
  */
 public class TargetUpdateRequest
 {
-	public TargetUpdateRequest(GameClient client, ReceivablePacket packet)
+	public static void process(GameClient client, ReceivablePacket packet)
 	{
 		// Get player.
 		final Player player = client.getActiveChar();

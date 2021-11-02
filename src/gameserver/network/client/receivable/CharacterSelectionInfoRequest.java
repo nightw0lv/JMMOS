@@ -6,11 +6,11 @@ import gameserver.network.client.sendable.CharacterSelectionInfoResult;
 
 /**
  * @author Pantelis Andrianakis
- * @version November 7th 2018
+ * @since November 7th 2018
  */
 public class CharacterSelectionInfoRequest
 {
-	public CharacterSelectionInfoRequest(GameClient client, ReceivablePacket packet)
+	public static void process(GameClient client, ReceivablePacket packet)
 	{
 		// Read data.
 		final String accountName = packet.readString().toLowerCase();

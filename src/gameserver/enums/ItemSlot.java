@@ -2,7 +2,7 @@ package gameserver.enums;
 
 /**
  * @author Pantelis Andrianakis
- * @version June 22nd 2019
+ * @since June 22nd 2019
  */
 public enum ItemSlot
 {

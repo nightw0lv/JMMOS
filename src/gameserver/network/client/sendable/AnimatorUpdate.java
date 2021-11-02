@@ -4,7 +4,7 @@ import common.network.SendablePacket;
 
 /**
  * @author Pantelis Andrianakis
- * @version February 4th 2019
+ * @since February 4th 2019
  */
 public class AnimatorUpdate extends SendablePacket
 {

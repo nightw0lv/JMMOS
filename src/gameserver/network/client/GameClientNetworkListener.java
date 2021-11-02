@@ -15,12 +15,12 @@ import common.util.Chronos;
 
 /**
  * @author Pantelis Andrianakis
- * @version September 7th 2020
+ * @since September 7th 2020
  */
 public class GameClientNetworkListener
 {
-	private final static List<Set<GameClient>> CLIENT_READ_POOLS = new ArrayList<>();
-	private final static List<Set<GameClient>> CLIENT_EXECUTE_POOLS = new ArrayList<>();
+	private static final List<Set<GameClient>> CLIENT_READ_POOLS = new ArrayList<>();
+	private static final List<Set<GameClient>> CLIENT_EXECUTE_POOLS = new ArrayList<>();
 	
 	public static void init()
 	{

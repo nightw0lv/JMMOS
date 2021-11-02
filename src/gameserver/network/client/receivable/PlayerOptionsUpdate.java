@@ -11,13 +11,13 @@ import gameserver.network.client.GameClient;
 
 /**
  * @author Pantelis Andrianakis
- * @version February 14th 2019
+ * @since February 14th 2019
  */
 public class PlayerOptionsUpdate
 {
 	private static final String UPDATE_CHARACTER_OPTIONS_QUERY = "UPDATE character_options SET chat_color_normal=?, chat_color_message=?, chat_color_system=?, chat_use_timestamps=?, key_up_1=?, key_up_2=?, key_down_1=?, key_down_2=?, key_left_1=?, key_left_2=?, key_right_1=?, key_right_2=?, key_jump_1=?, key_jump_2=?, key_character_1=?, key_character_2=?, key_inventory_1=?, key_inventory_2=?, key_skills_1=?, key_skills_2=?, key_shortcut_1_1=?, key_shortcut_1_2=?, key_shortcut_2_1=?, key_shortcut_2_2=?, key_shortcut_3_1=?, key_shortcut_3_2=?, key_shortcut_4_1=?, key_shortcut_4_2=?, key_shortcut_5_1=?, key_shortcut_5_2=?, key_shortcut_6_1=?, key_shortcut_6_2=?, key_shortcut_7_1=?, key_shortcut_7_2=?, key_shortcut_8_1=?, key_shortcut_8_2=?, key_shortcut_9_1=?, key_shortcut_9_2=?, key_shortcut_10_1=?, key_shortcut_10_2=?, key_shortcut_11_1=?, key_shortcut_11_2=?, key_shortcut_12_1=?, key_shortcut_12_2=? WHERE name=?";
 	
-	public PlayerOptionsUpdate(GameClient client, ReceivablePacket packet)
+	public static void process(GameClient client, ReceivablePacket packet)
 	{
 		// Get player.
 		final Player player = client.getActiveChar();

@@ -25,7 +25,7 @@ package common.util;
  * Chronos updates an internal long value with System.currentTimeMillis() approximately every millisecond.<br>
  * To get the current time in milliseconds use Chronos.currentTimeMillis()
  * @author Pantelis Andrianakis
- * @version February 3rd 2021
+ * @since February 3rd 2021
  */
 public class Chronos extends Thread
 {

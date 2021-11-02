@@ -4,7 +4,7 @@ import gameserver.enums.SkillType;
 
 /**
  * @author Pantelis Andrianakis
- * @version May 5th 2019
+ * @since May 5th 2019
  */
 public class SkillHolder
 {

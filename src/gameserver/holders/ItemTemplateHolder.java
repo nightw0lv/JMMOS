@@ -5,7 +5,7 @@ import gameserver.enums.ItemType;
 
 /**
  * @author Pantelis Andrianakis
- * @version May 5th 2019
+ * @since May 5th 2019
  */
 public class ItemTemplateHolder
 {

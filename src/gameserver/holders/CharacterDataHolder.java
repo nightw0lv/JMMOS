@@ -2,7 +2,7 @@ package gameserver.holders;
 
 /**
  * @author Pantelis Andrianakis
- * @version December 28th 2017
+ * @since December 28th 2017
  */
 public class CharacterDataHolder
 {

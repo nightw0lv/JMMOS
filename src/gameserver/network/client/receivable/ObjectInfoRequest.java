@@ -15,11 +15,11 @@ import gameserver.network.client.sendable.PlayerInformation;
 
 /**
  * @author Pantelis Andrianakis
- * @version November 7th 2018
+ * @since November 7th 2018
  */
 public class ObjectInfoRequest
 {
-	public ObjectInfoRequest(GameClient client, ReceivablePacket packet)
+	public static void process(GameClient client, ReceivablePacket packet)
 	{
 		// Get player.
 		final Player player = client.getActiveChar();
@@ -54,7 +54,7 @@ public class ObjectInfoRequest
 		}
 	}
 	
-	private class SendAnimationInfo implements Runnable
+	private static class SendAnimationInfo implements Runnable
 	{
 		private final GameClient _client;
 		private final WorldObject _obj;

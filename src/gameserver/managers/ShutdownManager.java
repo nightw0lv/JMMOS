@@ -9,7 +9,7 @@ import gameserver.network.client.sendable.Logout;
 
 /**
  * @author Pantelis Andrianakis
- * @version September 11th 2020
+ * @since September 11th 2020
  */
 public class ShutdownManager extends Thread
 {

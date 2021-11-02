@@ -7,7 +7,7 @@ import gnu.trove.map.TIntObjectMap;
 
 /**
  * @author Pantelis Andrianakis
- * @version March 12th 2020
+ * @since March 12th 2020
  */
 public class PlayerInventoryUpdate extends SendablePacket
 {

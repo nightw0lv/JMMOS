@@ -15,7 +15,7 @@ import gameserver.network.client.sendable.NpcInformation;
 
 /**
  * @author Pantelis Andrianakis
- * @version November 7th 2018
+ * @since November 7th 2018
  */
 public class WorldObject
 {
@@ -42,7 +42,7 @@ public class WorldObject
 		return _animations;
 	}
 	
-	public void SetAnimations(AnimationHolder animations)
+	public void setAnimations(AnimationHolder animations)
 	{
 		_animations = animations;
 	}

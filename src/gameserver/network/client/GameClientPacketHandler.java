@@ -19,7 +19,7 @@ import gameserver.network.client.receivable.TargetUpdateRequest;
 
 /**
  * @author Pantelis Andrianakis
- * @version November 7th 2018
+ * @since November 7th 2018
  */
 public class GameClientPacketHandler
 {
@@ -33,72 +33,72 @@ public class GameClientPacketHandler
 			{
 				case 1:
 				{
-					new AccountAuthenticationRequest(client, packet);
+					AccountAuthenticationRequest.process(client, packet);
 					break;
 				}
 				case 2:
 				{
-					new CharacterSelectionInfoRequest(client, packet);
+					CharacterSelectionInfoRequest.process(client, packet);
 					break;
 				}
 				case 3:
 				{
-					new CharacterCreationRequest(client, packet);
+					CharacterCreationRequest.process(client, packet);
 					break;
 				}
 				case 4:
 				{
-					new CharacterDeletionRequest(client, packet);
+					CharacterDeletionRequest.process(client, packet);
 					break;
 				}
 				case 5:
 				{
-					new CharacterSlotUpdate(client, packet);
+					CharacterSlotUpdate.process(client, packet);
 					break;
 				}
 				case 6:
 				{
-					new CharacterSelectUpdate(client, packet);
+					CharacterSelectUpdate.process(client, packet);
 					break;
 				}
 				case 7:
 				{
-					new EnterWorldRequest(client, packet);
+					EnterWorldRequest.process(client, packet);
 					break;
 				}
 				case 8:
 				{
-					new ExitWorldRequest(client, packet);
+					ExitWorldRequest.process(client, packet);
 					break;
 				}
 				case 9:
 				{
-					new LocationUpdateRequest(client, packet);
+					LocationUpdateRequest.process(client, packet);
 					break;
 				}
 				case 10:
 				{
-					new AnimatorUpdateRequest(client, packet);
+					AnimatorUpdateRequest.process(client, packet);
 					break;
 				}
 				case 11:
 				{
-					new ObjectInfoRequest(client, packet);
+					ObjectInfoRequest.process(client, packet);
 					break;
 				}
 				case 12:
 				{
-					new PlayerOptionsUpdate(client, packet);
+					PlayerOptionsUpdate.process(client, packet);
 					break;
 				}
 				case 13:
 				{
-					new ChatRequest(client, packet);
+					ChatRequest.process(client, packet);
 					break;
 				}
 				case 14:
 				{
-					new TargetUpdateRequest(client, packet);
+					TargetUpdateRequest.process(client, packet);
 					break;
 				}
 				default:

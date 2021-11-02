@@ -5,7 +5,7 @@ import gameserver.actor.Player;
 
 /**
  * @author Pantelis Andrianakis
- * @version November 7th 2018
+ * @since November 7th 2018
  */
 public class PlayerInformation extends SendablePacket
 {

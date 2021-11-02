@@ -2,7 +2,7 @@ package gameserver.holders;
 
 /**
  * @author Pantelis Andrianakis
- * @version March 12th 2020
+ * @since March 12th 2020
  */
 public class ItemHolder
 {

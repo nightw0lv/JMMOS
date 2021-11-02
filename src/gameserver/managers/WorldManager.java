@@ -19,7 +19,7 @@ import gnu.trove.map.hash.TLongObjectHashMap;
 
 /**
  * @author Pantelis Andrianakis
- * @version November 14th 2020
+ * @since November 14th 2020
  */
 public class WorldManager
 {

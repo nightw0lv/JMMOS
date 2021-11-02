@@ -15,11 +15,11 @@ import gameserver.network.client.sendable.PlayerOptionsInformation;
 
 /**
  * @author Pantelis Andrianakis
- * @version November 7th 2018
+ * @since November 7th 2018
  */
 public class EnterWorldRequest
 {
-	public EnterWorldRequest(GameClient client, ReceivablePacket packet)
+	public static void process(GameClient client, ReceivablePacket packet)
 	{
 		// Read data.
 		final String characterName = packet.readString();
@@ -42,7 +42,7 @@ public class EnterWorldRequest
 		ThreadManager.schedule(new BroadcastAndReceiveInfo(player), 1000);
 	}
 	
-	private class BroadcastAndReceiveInfo implements Runnable
+	private static class BroadcastAndReceiveInfo implements Runnable
 	{
 		private final Player _player;
 		

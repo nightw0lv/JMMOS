@@ -10,13 +10,13 @@ import gameserver.network.client.GameClient;
 
 /**
  * @author Pantelis Andrianakis
- * @version November 7th 2018
+ * @since November 7th 2018
  */
 public class CharacterSlotUpdate
 {
 	private static final String CHARACTER_SLOT_UPDATE_QUERY = "UPDATE characters SET slot=? WHERE account=? AND slot=?";
 	
-	public CharacterSlotUpdate(GameClient client, ReceivablePacket packet)
+	public static void process(GameClient client, ReceivablePacket packet)
 	{
 		// Read data.
 		final byte oldSlot = (byte) packet.readByte();

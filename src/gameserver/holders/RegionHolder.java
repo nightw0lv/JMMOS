@@ -7,7 +7,7 @@ import gameserver.util.UnboundArrayList;
 
 /**
  * @author Pantelis Andrianakis
- * @version April 27th 2019
+ * @since April 27th 2019
  */
 public class RegionHolder
 {

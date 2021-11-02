@@ -12,7 +12,7 @@ import gameserver.network.client.sendable.ChatResult;
 
 /**
  * @author Pantelis Andrianakis
- * @version November 7th 2018
+ * @since November 7th 2018
  */
 public class ChatManager
 {
@@ -46,17 +46,17 @@ public class ChatManager
 			// Normal user commands.
 			if (lowercaseMessage.equals(COMMAND_LOCATION))
 			{
-				LocCommand.Handle(sender);
+				LocCommand.handle(sender);
 				return;
 			}
 			else if (lowercaseMessage.equals(COMMAND_RETURN))
 			{
-				ReturnCommand.Handle(sender);
+				ReturnCommand.handle(sender);
 				return;
 			}
 			else if (lowercaseMessage.startsWith(COMMAND_PERSONAL_MESSAGE))
 			{
-				TellCommand.Handle(sender, lowercaseMessage, message);
+				TellCommand.handle(sender, lowercaseMessage, message);
 				return;
 			}
 			
@@ -66,12 +66,12 @@ public class ChatManager
 			{
 				if (lowercaseMessage.startsWith(COMMAND_SPAWN))
 				{
-					SpawnCommand.Handle(sender, lowercaseMessage);
+					SpawnCommand.handle(sender, lowercaseMessage);
 					return;
 				}
 				else if (lowercaseMessage.equals(COMMAND_DELETE))
 				{
-					DeleteCommand.Handle(sender);
+					DeleteCommand.handle(sender);
 					return;
 				}
 			}

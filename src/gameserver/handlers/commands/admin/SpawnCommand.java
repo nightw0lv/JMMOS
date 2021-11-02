@@ -16,13 +16,13 @@ import gameserver.network.client.sendable.NpcInformation;
 
 /**
  * @author Pantelis Andrianakis
- * @version November 29th 2019
+ * @since November 29th 2019
  */
 public class SpawnCommand
 {
 	private static final String SPAWN_SAVE_QUERY = "INSERT INTO spawnlist (npc_id, x, y, z, heading, respawn_delay) values (?, ?, ?, ?, ?, ?)";
 	
-	public static void Handle(Player player, String command)
+	public static void handle(Player player, String command)
 	{
 		// Gather information from parameters.
 		String[] commandSplit = command.split(" ");

@@ -5,7 +5,7 @@ import gameserver.actor.Npc;
 
 /**
  * @author Pantelis Andrianakis
- * @version November 28th 2019
+ * @since November 28th 2019
  */
 public class NpcInformation extends SendablePacket
 {

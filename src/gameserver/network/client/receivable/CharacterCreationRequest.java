@@ -20,7 +20,7 @@ import gameserver.network.client.sendable.CharacterCreationResult;
 
 /**
  * @author Pantelis Andrianakis
- * @version November 7th 2018
+ * @since November 7th 2018
  */
 public class CharacterCreationRequest
 {
@@ -38,7 +38,7 @@ public class CharacterCreationRequest
 	private static final int INVALID_PARAMETERS = 4;
 	private static final int SUCCESS = 100;
 	
-	public CharacterCreationRequest(GameClient client, ReceivablePacket packet)
+	public static void process(GameClient client, ReceivablePacket packet)
 	{
 		// Make sure player has authenticated.
 		if ((client.getAccountName() == null) || (client.getAccountName().length() == 0))
@@ -75,7 +75,7 @@ public class CharacterCreationRequest
 		}
 		
 		// Visual exploit checks.
-		if (((race < 0) || (race > 1)) //
+		if (((race < 0) || (race > 5)) //
 			|| ((height < 0.39) || (height > 0.61)) //
 			|| ((hairType < 0) || (hairType > 3)) //
 		/* || (!Config.VALID_SKIN_COLORS.contains(skinColor)) */) // TODO: Check palette.

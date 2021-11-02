@@ -11,7 +11,7 @@ import gnu.trove.list.array.TIntArrayList;
 
 /**
  * @author Pantelis Andrianakis
- * @version November 7th 2018
+ * @since November 7th 2018
  */
 public final class Config
 {
@@ -69,7 +69,9 @@ public final class Config
 	// Threads
 	// --------------------------------------------------
 	public static int SCHEDULED_THREAD_POOL_COUNT;
+	public static int THREADS_PER_SCHEDULED_THREAD_POOL;
 	public static int INSTANT_THREAD_POOL_COUNT;
+	public static int THREADS_PER_INSTANT_THREAD_POOL;
 	
 	public static void load()
 	{
@@ -96,11 +98,13 @@ public final class Config
 		{
 			SCHEDULED_THREAD_POOL_COUNT = Runtime.getRuntime().availableProcessors();
 		}
+		THREADS_PER_SCHEDULED_THREAD_POOL = threadConfigs.getInt("ThreadsPerScheduledThreadPool", 4);
 		INSTANT_THREAD_POOL_COUNT = threadConfigs.getInt("InstantThreadPoolCount", -1);
 		if (INSTANT_THREAD_POOL_COUNT == -1)
 		{
 			INSTANT_THREAD_POOL_COUNT = Runtime.getRuntime().availableProcessors();
 		}
+		THREADS_PER_INSTANT_THREAD_POOL = threadConfigs.getInt("ThreadsPerInstantThreadPool", 2);
 		
 		final ConfigReader networkConfigs = new ConfigReader(NETWORK_CONFIG_FILE);
 		GAMESERVER_PORT = networkConfigs.getInt("GameserverPort", 5055);
@@ -130,7 +134,7 @@ public final class Config
 		VALID_SKIN_COLORS.clear();
 		for (String colorCode : playerConfigs.getString("ValidSkinColorCodes", "F1D1BD;F1C4AD;E7B79C;E19F7E;AF7152;7E472E;4A2410;F7DDC0;F3D1A9;C5775A;B55B44;863923;672818;3F1508").split(";"))
 		{
-			VALID_SKIN_COLORS.add(ColorUtil.HexStringToInt(colorCode));
+			VALID_SKIN_COLORS.add(ColorUtil.hexStringToInt(colorCode));
 		}
 		
 		LogManager.log("Configs: Initialized.");

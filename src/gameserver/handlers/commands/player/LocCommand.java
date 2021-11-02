@@ -6,11 +6,11 @@ import gameserver.managers.ChatManager;
 
 /**
  * @author Pantelis Andrianakis
- * @version November 29th 2019
+ * @since November 29th 2019
  */
 public class LocCommand
 {
-	public static void Handle(Player player)
+	public static void handle(Player player)
 	{
 		final LocationHolder location = player.getLocation();
 		

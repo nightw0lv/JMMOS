@@ -5,7 +5,7 @@ import gameserver.holders.SpawnHolder;
 
 /**
  * @author Pantelis Andrianakis
- * @version November 28th 2019
+ * @since November 28th 2019
  */
 public class Monster extends Npc
 {
@@ -29,7 +29,8 @@ public class Monster extends Npc
 		return this;
 	}
 	
-	public String ToString()
+	@Override
+	public String toString()
 	{
 		return "MONSTER [" + getNpcHolder().getNpcId() + "]";
 	}

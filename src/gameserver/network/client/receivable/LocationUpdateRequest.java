@@ -10,13 +10,13 @@ import gameserver.network.client.sendable.Logout;
 
 /**
  * @author Pantelis Andrianakis
- * @version November 7th 2018
+ * @since November 7th 2018
  */
 public class LocationUpdateRequest
 {
-	private final static int MAX_MOVE_DISTANCE = 300;
+	private static final int MAX_MOVE_DISTANCE = 300;
 	
-	public LocationUpdateRequest(GameClient client, ReceivablePacket packet)
+	public static void process(GameClient client, ReceivablePacket packet)
 	{
 		// Get player.
 		final Player player = client.getActiveChar();

@@ -18,7 +18,7 @@ import gameserver.network.client.sendable.Logout;
 
 /**
  * @author Pantelis Andrianakis
- * @version November 7th 2018
+ * @since November 7th 2018
  */
 public class AccountAuthenticationRequest
 {
@@ -32,7 +32,7 @@ public class AccountAuthenticationRequest
 	private static final int STATUS_INCORRECT_CLIENT = 6;
 	private static final int STATUS_AUTHENTICATED = 100;
 	
-	public AccountAuthenticationRequest(GameClient client, ReceivablePacket packet)
+	public static void process(GameClient client, ReceivablePacket packet)
 	{
 		// Read data.
 		final double clientVersion = packet.readDouble();

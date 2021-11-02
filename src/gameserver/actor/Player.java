@@ -13,7 +13,7 @@ import gameserver.network.client.GameClient;
 
 /**
  * @author Pantelis Andrianakis
- * @version November 7th 2018
+ * @since November 7th 2018
  */
 public class Player extends Creature
 {

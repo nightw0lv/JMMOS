@@ -4,7 +4,7 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * @author Pantelis Andrianakis
- * @version October 29th 2020
+ * @since October 29th 2020
  */
 public class ReceivablePacket
 {

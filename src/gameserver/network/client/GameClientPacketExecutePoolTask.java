@@ -7,7 +7,7 @@ import common.util.Chronos;
 
 /**
  * @author Pantelis Andrianakis
- * @version September 7th 2020
+ * @since September 7th 2020
  */
 public class GameClientPacketExecutePoolTask implements Runnable
 {

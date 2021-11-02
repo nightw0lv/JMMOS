@@ -14,7 +14,7 @@ import common.Config;
 
 /**
  * @author Pantelis Andrianakis
- * @version November 7th 2018
+ * @since November 7th 2018
  */
 public class LogManager
 {

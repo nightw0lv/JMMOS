@@ -15,7 +15,7 @@ import gameserver.network.client.sendable.CharacterDeletionResult;
 
 /**
  * @author Pantelis Andrianakis
- * @version November 7th 2018
+ * @since November 7th 2018
  */
 public class CharacterDeletionRequest
 {
@@ -25,7 +25,7 @@ public class CharacterDeletionRequest
 	private static final String CHARACTER_ITEM_DELETION_QUERY = "UPDATE character_items SET owner=? WHERE owner=?";
 	private static final String CHARACTER_INTERFACE_DELETION_QUERY = "UPDATE character_options SET name=? WHERE name=?";
 	
-	public CharacterDeletionRequest(GameClient client, ReceivablePacket packet)
+	public static void process(GameClient client, ReceivablePacket packet)
 	{
 		// Read data.
 		final byte slot = (byte) packet.readByte();

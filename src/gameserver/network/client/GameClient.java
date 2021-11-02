@@ -11,7 +11,7 @@ import gameserver.actor.Player;
 
 /**
  * @author Pantelis Andrianakis
- * @version September 7th 2020
+ * @since September 7th 2020
  */
 public class GameClient
 {

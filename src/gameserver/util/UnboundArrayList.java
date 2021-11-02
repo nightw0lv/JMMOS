@@ -33,7 +33,7 @@ import java.util.function.Consumer;
  * Further more, get() does not throw IndexOutOfBoundsException, a {@code null} element is returned instead.<br>
  * An equivalent Iterator constructor is introduced under the same logic.
  * @param <E> the type of elements in this list
- * @version September 4th 2020
+ * @since September 4th 2020
  * @author Pantelis Andrianakis
  */
 public class UnboundArrayList<E>extends ArrayList<E>

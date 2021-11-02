@@ -8,7 +8,7 @@ import common.Config;
 
 /**
  * @author Pantelis Andrianakis
- * @version November 10th 2018
+ * @since November 10th 2018
  */
 public class DatabaseManager
 {

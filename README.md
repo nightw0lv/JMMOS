@@ -14,8 +14,8 @@ Java server that connects with Unity clients.
 - Store player client options.
 - Spawn NPCs from database.
 
-### .Java version.
-Tested with OpenJDK 15.0.2
+### Java version
+Tested with OpenJDK 15.0.2<br>
 Also compatible with JDK-8u202
 
 ### You can see the latest development progress on YouTube.

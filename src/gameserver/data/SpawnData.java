@@ -14,7 +14,7 @@ import gameserver.holders.SpawnHolder;
 
 /**
  * @author Pantelis Andrianakis
- * @version November 28th 2019
+ * @since November 28th 2019
  */
 public class SpawnData
 {

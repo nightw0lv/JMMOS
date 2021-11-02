@@ -16,7 +16,7 @@ import gameserver.network.client.GameClientNetworkListener;
 
 /**
  * @author Pantelis Andrianakis
- * @version September 7th 2020
+ * @since September 7th 2020
  */
 public class GameServer
 {

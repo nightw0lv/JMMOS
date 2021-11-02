@@ -10,14 +10,14 @@ import gameserver.network.client.GameClient;
 
 /**
  * @author Pantelis Andrianakis
- * @version November 7th 2018
+ * @since November 7th 2018
  */
 public class CharacterSelectUpdate
 {
 	private static final String CHARACTER_SELECTED_RESET_QUERY = "UPDATE characters SET selected=0 WHERE account=?";
 	private static final String CHARACTER_SELECTED_UPDATE_QUERY = "UPDATE characters SET selected=1 WHERE account=? AND slot=?";
 	
-	public CharacterSelectUpdate(GameClient client, ReceivablePacket packet)
+	public static void process(GameClient client, ReceivablePacket packet)
 	{
 		// Read data.
 		final int slot = packet.readByte();
