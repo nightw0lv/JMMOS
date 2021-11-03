@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="dist/libs/mariadb-java-client-2.6.1.jar" sourcepath="dist/libs/mariadb-java-client-2.6.1-sources.jar"/>
+	<classpathentry kind="lib" path="dist/libs/mariadb-java-client-2.7.1.jar" sourcepath="dist/libs/mariadb-java-client-2.7.1-sources.jar"/>
 	<classpathentry kind="lib" path="dist/libs/trove-3.0.3.jar" sourcepath="dist/libs/trove-3.0.3-sources.jar"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="output" path="bin"/>
