@@ -91,7 +91,7 @@ public final class ThreadManager
 		}
 		catch (Exception e)
 		{
-			LogManager.log(e.getMessage() + System.lineSeparator() + e.getStackTrace());
+			LogManager.log(runnable.getClass().getSimpleName() + System.lineSeparator() + e.getMessage() + System.lineSeparator() + e.getStackTrace());
 			return null;
 		}
 	}
@@ -111,7 +111,7 @@ public final class ThreadManager
 		}
 		catch (Exception e)
 		{
-			LogManager.log(e.getMessage() + System.lineSeparator() + e.getStackTrace());
+			LogManager.log(runnable.getClass().getSimpleName() + System.lineSeparator() + e.getMessage() + System.lineSeparator() + e.getStackTrace());
 			return null;
 		}
 	}
@@ -128,7 +128,7 @@ public final class ThreadManager
 		}
 		catch (Exception e)
 		{
-			LogManager.log(e.getMessage() + System.lineSeparator() + e.getStackTrace());
+			LogManager.log(runnable.getClass().getSimpleName() + System.lineSeparator() + e.getMessage() + System.lineSeparator() + e.getStackTrace());
 		}
 	}
 	
