@@ -1,5 +1,6 @@
 package gameserver.network.client;
 
+import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.Set;
@@ -87,6 +88,11 @@ public class GameClientPacketReadPoolTask implements Runnable
 								}
 							}
 						}
+					}
+					catch (SocketTimeoutException e)
+					{
+						// TODO: Send lag message to client.
+						onDisconnection(client);
 					}
 					catch (Exception e) // Unexpected disconnection?
 					{
