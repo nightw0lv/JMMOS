@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import common.Config;
+import common.managers.LogManager;
 import common.network.SendablePacket;
 import gameserver.actor.Player;
 
@@ -18,7 +19,7 @@ public class GameClient
 	private String _ip;
 	private String _accountName;
 	private SocketChannel _channel;
-	private final Set<byte[]> _pendingPacketData = ConcurrentHashMap.newKeySet(Config.QUEUE_PACKET_LIMIT);
+	private final Set<byte[]> _pendingPacketData = ConcurrentHashMap.newKeySet(Config.PACKET_QUEUE_LIMIT);
 	private Player _activeChar;
 	
 	public GameClient(SocketChannel channel)
@@ -77,9 +78,27 @@ public class GameClient
 	public void addPacketData(byte[] data)
 	{
 		// Drop packets if queue is too big.
-		if (_pendingPacketData.size() >= Config.QUEUE_PACKET_LIMIT)
+		final int size = _pendingPacketData.size();
+		if (size >= Config.PACKET_QUEUE_LIMIT)
 		{
-			return;
+			if (Config.PACKET_QUEUE_LOG)
+			{
+				final StringBuilder sb = new StringBuilder();
+				sb.append(this);
+				sb.append(" packet queue size(");
+				sb.append(size);
+				sb.append(") exceeded limit(");
+				sb.append(Config.PACKET_QUEUE_LIMIT);
+				sb.append(") for packet id ");
+				sb.append((data[0] & 0xff) | ((data[1] & 0xff) << 8));
+				sb.append(".");
+				sb.append(this);
+				LogManager.log(sb.toString());
+			}
+			if (Config.PACKET_QUEUE_DROP)
+			{
+				return;
+			}
 		}
 		
 		// Add to queue.
@@ -104,6 +123,12 @@ public class GameClient
 	@Override
 	public String toString()
 	{
-		return "[Account: " + _accountName + " - IP: " + (_ip == null ? "disconnected" : _ip) + "]";
+		final StringBuilder sb = new StringBuilder();
+		sb.append("[Account: ");
+		sb.append(_accountName);
+		sb.append(" - IP: ");
+		sb.append(_ip == null ? "disconnected" : _ip);
+		sb.append("]");
+		return sb.toString();
 	}
 }

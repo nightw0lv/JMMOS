@@ -54,7 +54,9 @@ public final class Config
 	public static int GAMESERVER_PORT;
 	public static int CLIENT_READ_POOL_SIZE;
 	public static int CLIENT_EXECUTE_POOL_SIZE;
-	public static int QUEUE_PACKET_LIMIT;
+	public static int PACKET_QUEUE_LIMIT;
+	public static boolean PACKET_QUEUE_DROP;
+	public static boolean PACKET_QUEUE_LOG;
 	public static boolean TCP_NO_DELAY;
 	public static int CONNECTION_TIMEOUT;
 	public static int MAXIMUM_ONLINE_USERS;
@@ -112,7 +114,9 @@ public final class Config
 		GAMESERVER_PORT = networkConfigs.getInt("GameserverPort", 5055);
 		CLIENT_READ_POOL_SIZE = networkConfigs.getInt("ClientReadPoolSize", 100);
 		CLIENT_EXECUTE_POOL_SIZE = networkConfigs.getInt("ClientExecutePoolSize", 50);
-		QUEUE_PACKET_LIMIT = networkConfigs.getInt("QueuePacketLimit", 20);
+		PACKET_QUEUE_LIMIT = networkConfigs.getInt("PacketQueueLimit", 20);
+		PACKET_QUEUE_DROP = networkConfigs.getBoolean("PacketQueueDrop", false);
+		PACKET_QUEUE_LOG = networkConfigs.getBoolean("PacketQueueLog", true);
 		TCP_NO_DELAY = networkConfigs.getBoolean("TcpNoDelay", true);
 		CONNECTION_TIMEOUT = networkConfigs.getInt("ConnectionTimeout", 800);
 		MAXIMUM_ONLINE_USERS = networkConfigs.getInt("MaximumOnlineUsers", 2000);
