@@ -38,9 +38,8 @@ public class GameClientNetworkListener
 		public void run()
 		{
 			// Create server and bind port.
-			try
+			try (ServerSocketChannel server = ServerSocketChannel.open())
 			{
-				final ServerSocketChannel server = ServerSocketChannel.open();
 				server.bind(new InetSocketAddress(Config.GAMESERVER_PORT));
 				server.configureBlocking(false); // Non-blocking I/O.
 				
