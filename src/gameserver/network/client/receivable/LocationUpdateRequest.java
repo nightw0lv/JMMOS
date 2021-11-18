@@ -43,7 +43,7 @@ public class LocationUpdateRequest
 		if (!player.isTeleporting() && (player.calculateDistance(posX, posY, posZ) > MAX_MOVE_DISTANCE))
 		{
 			player.setLocation(Config.STARTING_LOCATION);
-			client.channelSend(new Logout());
+			client.sendPacket(new Logout());
 			return;
 		}
 		

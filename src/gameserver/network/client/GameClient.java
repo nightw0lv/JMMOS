@@ -60,7 +60,7 @@ public class GameClient
 		_accountName = accountName;
 	}
 	
-	public void channelSend(SendablePacket packet)
+	public void sendPacket(SendablePacket packet)
 	{
 		if ((_channel != null) && _channel.isConnected())
 		{

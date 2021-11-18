@@ -18,7 +18,7 @@ public class CharacterSelectionInfoRequest
 		// If account has logged send the information.
 		if (client.getAccountName().equals(accountName))
 		{
-			client.channelSend(new CharacterSelectionInfoResult(accountName));
+			client.sendPacket(new CharacterSelectionInfoResult(accountName));
 		}
 	}
 }

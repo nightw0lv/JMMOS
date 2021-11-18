@@ -26,7 +26,7 @@ public class ShutdownManager extends Thread
 			final GameClient client = player.getClient();
 			if (client != null)
 			{
-				client.channelSend(logout);
+				client.sendPacket(logout);
 				client.setChannel(null);
 			}
 		}

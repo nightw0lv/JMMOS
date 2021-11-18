@@ -42,7 +42,7 @@ public class AccountAuthenticationRequest
 		// Client version check.
 		if (clientVersion != Config.CLIENT_VERSION)
 		{
-			client.channelSend(new AccountAuthenticationResult(STATUS_INCORRECT_CLIENT));
+			client.sendPacket(new AccountAuthenticationResult(STATUS_INCORRECT_CLIENT));
 			return;
 		}
 		
@@ -55,14 +55,14 @@ public class AccountAuthenticationRequest
 		// Server shutting down or disabled.
 		if (!GameServer.ENABLE_LOGIN)
 		{
-			client.channelSend(new AccountAuthenticationResult(STATUS_TOO_MANY_ONLINE));
+			client.sendPacket(new AccountAuthenticationResult(STATUS_TOO_MANY_ONLINE));
 			return;
 		}
 		
 		// Account name checks.
 		if ((accountName.length() < 2) || (accountName.length() > 20) || accountName.contains("'") || (passwordHash.length() == 0)) // 20 should not happen, checking it here in case of client cheat.
 		{
-			client.channelSend(new AccountAuthenticationResult(STATUS_NOT_FOUND));
+			client.sendPacket(new AccountAuthenticationResult(STATUS_NOT_FOUND));
 			return;
 		}
 		
@@ -109,14 +109,14 @@ public class AccountAuthenticationRequest
 			// 0 does not exist, 1 banned, 2 requires activation, 3 wrong password, 4 too many online, 100 authenticated
 			if (status < STATUS_WRONG_PASSWORD)
 			{
-				client.channelSend(new AccountAuthenticationResult(status));
+				client.sendPacket(new AccountAuthenticationResult(status));
 				return;
 			}
 			
 			// Wrong password.
 			if (!passwordHash.equals(storedPassword))
 			{
-				client.channelSend(new AccountAuthenticationResult(STATUS_WRONG_PASSWORD));
+				client.sendPacket(new AccountAuthenticationResult(STATUS_WRONG_PASSWORD));
 				return;
 			}
 		}
@@ -125,23 +125,23 @@ public class AccountAuthenticationRequest
 		final GameClient existingClient = WorldManager.getClientByAccountName(accountName);
 		if (existingClient != null)
 		{
-			existingClient.channelSend(new Logout());
+			existingClient.sendPacket(new Logout());
 			WorldManager.removeClient(existingClient);
-			client.channelSend(new AccountAuthenticationResult(STATUS_ALREADY_ONLINE));
+			client.sendPacket(new AccountAuthenticationResult(STATUS_ALREADY_ONLINE));
 			return;
 		}
 		
 		// Too many online users.
 		if (WorldManager.getOnlineCount() >= Config.MAXIMUM_ONLINE_USERS)
 		{
-			client.channelSend(new AccountAuthenticationResult(STATUS_TOO_MANY_ONLINE));
+			client.sendPacket(new AccountAuthenticationResult(STATUS_TOO_MANY_ONLINE));
 			return;
 		}
 		
 		// Authentication was successful.
 		WorldManager.addClient(client);
 		client.setAccountName(accountName);
-		client.channelSend(new AccountAuthenticationResult(STATUS_AUTHENTICATED));
+		client.sendPacket(new AccountAuthenticationResult(STATUS_AUTHENTICATED));
 		
 		// Update last login date and IP address.
 		try (Connection con = DatabaseManager.getConnection();

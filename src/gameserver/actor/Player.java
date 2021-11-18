@@ -176,7 +176,7 @@ public class Player extends Creature
 	
 	public void channelSend(SendablePacket packet)
 	{
-		_client.channelSend(packet);
+		_client.sendPacket(packet);
 	}
 	
 	@Override

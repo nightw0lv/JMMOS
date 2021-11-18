@@ -119,6 +119,6 @@ public class CharacterDeletionRequest
 		}
 		
 		// Notify the client that character was deleted.
-		client.channelSend(new CharacterDeletionResult());
+		client.sendPacket(new CharacterDeletionResult());
 	}
 }

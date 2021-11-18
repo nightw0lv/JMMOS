@@ -65,12 +65,12 @@ public class CharacterCreationRequest
 		// Name character checks.
 		if (characterName.contains("'"))
 		{
-			client.channelSend(new CharacterCreationResult(INVALID_NAME));
+			client.sendPacket(new CharacterCreationResult(INVALID_NAME));
 			return;
 		}
 		if ((characterName.length() < 2) || (characterName.length() > 12)) // 12 should not happen, checking it here in case of client cheat.
 		{
-			client.channelSend(new CharacterCreationResult(NAME_IS_TOO_SHORT));
+			client.sendPacket(new CharacterCreationResult(NAME_IS_TOO_SHORT));
 			return;
 		}
 		
@@ -80,7 +80,7 @@ public class CharacterCreationRequest
 			|| ((hairType < 0) || (hairType > 3)) //
 		/* || (!Config.VALID_SKIN_COLORS.contains(skinColor)) */) // TODO: Check palette.
 		{
-			client.channelSend(new CharacterCreationResult(INVALID_PARAMETERS));
+			client.sendPacket(new CharacterCreationResult(INVALID_PARAMETERS));
 			return;
 		}
 		
@@ -110,7 +110,7 @@ public class CharacterCreationRequest
 		}
 		if (characterCount >= Config.ACCOUNT_MAX_CHARACTERS)
 		{
-			client.channelSend(new CharacterCreationResult(CANNOT_CREATE_ADDITIONAL_CHARACTERS));
+			client.sendPacket(new CharacterCreationResult(CANNOT_CREATE_ADDITIONAL_CHARACTERS));
 			return;
 		}
 		
@@ -134,7 +134,7 @@ public class CharacterCreationRequest
 		}
 		if (characterExists)
 		{
-			client.channelSend(new CharacterCreationResult(NAME_ALREADY_EXISTS));
+			client.sendPacket(new CharacterCreationResult(NAME_ALREADY_EXISTS));
 			return;
 		}
 		
@@ -234,6 +234,6 @@ public class CharacterCreationRequest
 		}
 		
 		// Send success result.
-		client.channelSend(new CharacterCreationResult(SUCCESS));
+		client.sendPacket(new CharacterCreationResult(SUCCESS));
 	}
 }

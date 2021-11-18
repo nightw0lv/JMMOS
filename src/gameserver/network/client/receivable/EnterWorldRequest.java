@@ -32,10 +32,10 @@ public class EnterWorldRequest
 		client.setActiveChar(player);
 		
 		// Send user interface information to client.
-		client.channelSend(new PlayerOptionsInformation(player));
+		client.sendPacket(new PlayerOptionsInformation(player));
 		
 		// Send all inventory items to client.
-		client.channelSend(new PlayerInventoryUpdate(player));
+		client.sendPacket(new PlayerInventoryUpdate(player));
 		
 		// Use a task to send and receive nearby player information,
 		// because we need to have player initialization be complete in client side.

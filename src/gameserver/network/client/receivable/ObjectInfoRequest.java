@@ -40,11 +40,11 @@ public class ObjectInfoRequest
 			{
 				if (obj.isPlayer())
 				{
-					client.channelSend(new PlayerInformation(obj.asPlayer()));
+					client.sendPacket(new PlayerInformation(obj.asPlayer()));
 				}
 				else if (obj.isNpc())
 				{
-					client.channelSend(new NpcInformation(obj.asNpc()));
+					client.sendPacket(new NpcInformation(obj.asNpc()));
 				}
 				
 				// Send delayed animation update in case object was already moving.
@@ -73,7 +73,7 @@ public class ObjectInfoRequest
 				final AnimationHolder animations = _obj.getAnimations();
 				if (animations != null)
 				{
-					_client.channelSend(new AnimatorUpdate(_obj.getObjectId(), animations.getVelocityX(), animations.getVelocityZ(), animations.isTriggerJump(), animations.isInWater(), animations.isGrounded()));
+					_client.sendPacket(new AnimatorUpdate(_obj.getObjectId(), animations.getVelocityX(), animations.getVelocityZ(), animations.isTriggerJump(), animations.isInWater(), animations.isGrounded()));
 				}
 			}
 		}
