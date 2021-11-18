@@ -55,6 +55,7 @@ public final class Config
 	public static int CLIENT_READ_POOL_SIZE;
 	public static int CLIENT_EXECUTE_POOL_SIZE;
 	public static int QUEUE_PACKET_LIMIT;
+	public static boolean TCP_NO_DELAY;
 	public static int CONNECTION_TIMEOUT;
 	public static int MAXIMUM_ONLINE_USERS;
 	public static double CLIENT_VERSION;
@@ -112,6 +113,7 @@ public final class Config
 		CLIENT_READ_POOL_SIZE = networkConfigs.getInt("ClientReadPoolSize", 100);
 		CLIENT_EXECUTE_POOL_SIZE = networkConfigs.getInt("ClientExecutePoolSize", 50);
 		QUEUE_PACKET_LIMIT = networkConfigs.getInt("QueuePacketLimit", 20);
+		TCP_NO_DELAY = networkConfigs.getBoolean("TcpNoDelay", true);
 		CONNECTION_TIMEOUT = networkConfigs.getInt("ConnectionTimeout", 800);
 		MAXIMUM_ONLINE_USERS = networkConfigs.getInt("MaximumOnlineUsers", 2000);
 		CLIENT_VERSION = networkConfigs.getDouble("ClientVersion", 1.0);

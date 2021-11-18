@@ -54,6 +54,7 @@ public class GameClientNetworkListener
 					final SocketChannel channel = server.accept();
 					if (channel != null)
 					{
+						channel.socket().setTcpNoDelay(Config.TCP_NO_DELAY);
 						channel.socket().setSoTimeout(Config.CONNECTION_TIMEOUT);
 						channel.configureBlocking(false); // Non-blocking I/O.
 						createClient(channel);
