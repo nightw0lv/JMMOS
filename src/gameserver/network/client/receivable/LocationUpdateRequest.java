@@ -35,7 +35,7 @@ public class LocationUpdateRequest
 		// if ((posX < Config.WORLD_MINIMUM_X) || (posX > Config.WORLD_MAXIMUM_X) || (posY < Config.WORLD_MINIMUM_Y) || (posY > Config.WORLD_MAXIMUM_Y) || (posZ < Config.WORLD_MINIMUM_Z) || (posZ > Config.WORLD_MAXIMUM_Z))
 		// {
 		// player.setLocation(Config.STARTING_LOCATION);
-		// client.channelSend(new Logout());
+		// client.sendPacket(new Logout());
 		// return;
 		// }
 		

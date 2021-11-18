@@ -14,6 +14,6 @@ public class ReturnCommand
 	{
 		player.setTeleporting();
 		player.setLocation(Config.STARTING_LOCATION);
-		player.channelSend(new LocationUpdate(player, true));
+		player.sendPacket(new LocationUpdate(player, true));
 	}
 }

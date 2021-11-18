@@ -231,7 +231,7 @@ public class WorldManager
 						continue;
 					}
 					
-					nearby.asPlayer().channelSend(packet);
+					nearby.asPlayer().sendPacket(packet);
 				}
 			}
 		}

@@ -64,7 +64,7 @@ public class SpawnCommand
 		
 		// Broadcast NPC information.
 		final NpcInformation info = new NpcInformation(npc);
-		player.channelSend(info);
+		player.sendPacket(info);
 		WorldManager.broadcastPacketToVisiblePlayers(player, info);
 		
 		// Send player success message.

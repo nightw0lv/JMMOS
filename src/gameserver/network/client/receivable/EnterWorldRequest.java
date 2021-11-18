@@ -61,9 +61,9 @@ public class EnterWorldRequest
 			{
 				final Player nearby = players.get(i);
 				// Send the information to the current player.
-				_player.channelSend(new PlayerInformation(nearby));
+				_player.sendPacket(new PlayerInformation(nearby));
 				// Send information to the other player as well.
-				nearby.channelSend(playerInfo);
+				nearby.sendPacket(playerInfo);
 			}
 			
 			// Send nearby NPC information.
@@ -76,7 +76,7 @@ public class EnterWorldRequest
 					continue;
 				}
 				
-				_player.channelSend(new NpcInformation(nearby.asNpc()));
+				_player.sendPacket(new NpcInformation(nearby.asNpc()));
 			}
 		}
 	}

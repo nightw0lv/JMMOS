@@ -174,7 +174,7 @@ public class Player extends Creature
 		return _inventory;
 	}
 	
-	public void channelSend(SendablePacket packet)
+	public void sendPacket(SendablePacket packet)
 	{
 		_client.sendPacket(packet);
 	}

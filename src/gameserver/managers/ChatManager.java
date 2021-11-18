@@ -78,7 +78,7 @@ public class ChatManager
 		}
 		
 		// Normal message.
-		sender.channelSend(new ChatResult(CHAT_TYPE_NORMAL, sender.getName(), message));
+		sender.sendPacket(new ChatResult(CHAT_TYPE_NORMAL, sender.getName(), message));
 		WorldManager.broadcastPacketToVisiblePlayers(sender, new ChatResult(CHAT_TYPE_NORMAL, sender.getName(), message));
 		
 		// Log chat.
@@ -95,12 +95,12 @@ public class ChatManager
 	
 	public static void sendPrivateMessage(Player sender, Player receiver, String message)
 	{
-		sender.channelSend(new ChatResult(CHAT_TYPE_MESSAGE, MSG_TO + receiver.getName(), message));
-		receiver.channelSend(new ChatResult(CHAT_TYPE_MESSAGE, sender.getName(), message));
+		sender.sendPacket(new ChatResult(CHAT_TYPE_MESSAGE, MSG_TO + receiver.getName(), message));
+		receiver.sendPacket(new ChatResult(CHAT_TYPE_MESSAGE, sender.getName(), message));
 	}
 	
 	public static void sendSystemMessage(Player player, String message)
 	{
-		player.channelSend(new ChatResult(CHAT_TYPE_SYSTEM, SYS_NAME, message));
+		player.sendPacket(new ChatResult(CHAT_TYPE_SYSTEM, SYS_NAME, message));
 	}
 }

@@ -92,7 +92,7 @@ public class WorldObject
 						{
 							continue;
 						}
-						nearby.asPlayer().channelSend(deleteObject);
+						nearby.asPlayer().sendPacket(deleteObject);
 					}
 				}
 			}
@@ -114,7 +114,7 @@ public class WorldObject
 				{
 					continue;
 				}
-				asPlayer().channelSend(new NpcInformation(nearby.asNpc()));
+				asPlayer().sendPacket(new NpcInformation(nearby.asNpc()));
 			}
 		}
 	}
@@ -156,11 +156,11 @@ public class WorldObject
 			final Player nearby = players.get(i);
 			if (nearby.isPlayer())
 			{
-				nearby.asPlayer().channelSend(locationUpdate);
+				nearby.asPlayer().sendPacket(locationUpdate);
 			}
 			if (isPlayer())
 			{
-				player.channelSend(new LocationUpdate(nearby));
+				player.sendPacket(new LocationUpdate(nearby));
 			}
 		}
 	}
@@ -186,7 +186,7 @@ public class WorldObject
 				final WorldObject nearby = objects.get(j);
 				if ((nearby != null) && nearby.isPlayer())
 				{
-					nearby.asPlayer().channelSend(delete);
+					nearby.asPlayer().sendPacket(delete);
 				}
 			}
 		}
