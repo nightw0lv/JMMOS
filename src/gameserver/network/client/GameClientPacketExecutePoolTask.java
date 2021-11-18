@@ -22,6 +22,7 @@ public class GameClientPacketExecutePoolTask implements Runnable
 	public void run()
 	{
 		long executionStart;
+		long currentTime;
 		while (true)
 		{
 			executionStart = Chronos.currentTimeMillis();
@@ -54,7 +55,8 @@ public class GameClientPacketExecutePoolTask implements Runnable
 			}
 			
 			// Prevent high CPU caused by repeatedly looping.
-			if ((Chronos.currentTimeMillis() - executionStart) < 1)
+			currentTime = Chronos.currentTimeMillis();
+			if ((currentTime - executionStart) < 1)
 			{
 				try
 				{

@@ -46,6 +46,7 @@ public class GameClientNetworkListener
 				// Listen for new connections.
 				LogManager.log("Listening on port " + Config.GAMESERVER_PORT + " for incomming connections.");
 				long executionStart;
+				long currentTime;
 				while (true)
 				{
 					executionStart = Chronos.currentTimeMillis();
@@ -58,7 +59,8 @@ public class GameClientNetworkListener
 					}
 					
 					// Prevent high CPU caused by repeatedly polling the channel.
-					if ((Chronos.currentTimeMillis() - executionStart) < 1)
+					currentTime = Chronos.currentTimeMillis();
+					if ((currentTime - executionStart) < 1)
 					{
 						Thread.sleep(1);
 					}
