@@ -12,3 +12,4 @@ CREATE TABLE IF NOT EXISTS `npcs` (
 
 INSERT INTO `npcs` VALUES ('1', 'NPC', '1', '0', '100', '0', '0', '0', '0');
 INSERT INTO `npcs` VALUES ('2', 'NPC', '1', '1', '100', '0', '0', '0', '0');
+INSERT INTO `npcs` VALUES ('3', 'MONSTER', '1', '0', '100', '0', '0', '0', '0');

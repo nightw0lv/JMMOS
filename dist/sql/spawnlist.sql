@@ -9,3 +9,4 @@ CREATE TABLE IF NOT EXISTS `spawnlist` (
 
 INSERT INTO `spawnlist` VALUES ('1', '4539.947', '68.558754', '3844.322', '246.68936', '60');
 INSERT INTO `spawnlist` VALUES ('2', '4540.103', '68.70901', '3843.4163', '256.2401', '60');
+INSERT INTO `spawnlist` VALUES ('3', '4614.775', '69.23394', '3951.9578', '194.5843', '60');
