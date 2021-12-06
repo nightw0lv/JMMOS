@@ -1,6 +1,6 @@
 package gameserver.network.client.receivable;
 
-import java.util.List;
+import java.util.Collection;
 
 import common.network.ReceivablePacket;
 import gameserver.actor.Player;
@@ -34,11 +34,15 @@ public class TargetUpdateRequest
 		}
 		
 		// Find target WorldObject.
-		final List<WorldObject> objects = WorldManager.getVisibleObjects(player);
-		for (int i = 0; i < objects.size(); i++)
+		final Collection<WorldObject> objects = WorldManager.getVisibleObjects(player);
+		if (objects.isEmpty())
 		{
-			final WorldObject obj = objects.get(i);
-			if ((obj != null) && (obj.getObjectId() == targetObjectId))
+			return;
+		}
+		
+		for (WorldObject obj : objects)
+		{
+			if (obj.getObjectId() == targetObjectId)
 			{
 				player.setTarget(obj);
 				return;

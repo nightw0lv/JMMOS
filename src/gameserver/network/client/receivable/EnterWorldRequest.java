@@ -1,6 +1,6 @@
 package gameserver.network.client.receivable;
 
-import java.util.List;
+import java.util.Collection;
 
 import common.managers.ThreadManager;
 import common.network.ReceivablePacket;
@@ -56,27 +56,29 @@ public class EnterWorldRequest
 		{
 			// Send and receive visible object information.
 			final PlayerInformation playerInfo = new PlayerInformation(_player);
-			final List<Player> players = WorldManager.getVisiblePlayers(_player);
-			for (int i = 0; i < players.size(); i++)
+			final Collection<Player> players = WorldManager.getVisiblePlayers(_player);
+			if (!players.isEmpty())
 			{
-				final Player nearby = players.get(i);
-				// Send the information to the current player.
-				_player.sendPacket(new PlayerInformation(nearby));
-				// Send information to the other player as well.
-				nearby.sendPacket(playerInfo);
+				for (Player nearby : players)
+				{
+					// Send the information to the current player.
+					_player.sendPacket(new PlayerInformation(nearby));
+					// Send information to the other player as well.
+					nearby.sendPacket(playerInfo);
+				}
 			}
 			
 			// Send nearby NPC information.
-			final List<WorldObject> objects = WorldManager.getVisibleObjects(_player);
-			for (int i = 0; i < objects.size(); i++)
+			final Collection<WorldObject> objects = WorldManager.getVisibleObjects(_player);
+			if (!objects.isEmpty())
 			{
-				final WorldObject nearby = objects.get(i);
-				if (!nearby.isNpc())
+				for (WorldObject nearby : objects)
 				{
-					continue;
+					if (nearby.isNpc())
+					{
+						_player.sendPacket(new NpcInformation(nearby.asNpc()));
+					}
 				}
-				
-				_player.sendPacket(new NpcInformation(nearby.asNpc()));
 			}
 		}
 	}

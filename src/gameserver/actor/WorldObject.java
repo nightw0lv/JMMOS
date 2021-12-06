@@ -1,6 +1,6 @@
 package gameserver.actor;
 
-import java.util.List;
+import java.util.Collection;
 
 import common.managers.ThreadManager;
 import common.util.Chronos;
@@ -64,7 +64,7 @@ public class WorldObject
 		final int x = (int) posX / WorldManager.REGION_SIZE;
 		final int z = (int) posZ / WorldManager.REGION_SIZE;
 		final long regionHash = WorldManager.calculateRegionHash(x, z);
-		if (regionHash == _regionHash)
+		if (_regionHash == regionHash)
 		{
 			return;
 		}
@@ -84,14 +84,19 @@ public class WorldObject
 				final RegionHolder[] regions = _region.getSurroundingRegions();
 				for (int i = 0; i < regions.length; i++)
 				{
-					final List<WorldObject> objects = regions[i].getObjects();
-					for (int j = 0; j < objects.size(); j++)
+					final Collection<WorldObject> objects = regions[i].getObjects();
+					if (objects.isEmpty())
 					{
-						final WorldObject nearby = objects.get(j);
-						if ((nearby == null) || (nearby == this) || !nearby.isPlayer())
+						continue;
+					}
+					
+					for (WorldObject nearby : objects)
+					{
+						if ((nearby == this) || !nearby.isPlayer())
 						{
 							continue;
 						}
+						
 						nearby.asPlayer().sendPacket(deleteObject);
 					}
 				}
@@ -106,15 +111,13 @@ public class WorldObject
 		// TODO: Exclude known NPCs?
 		if (isPlayer())
 		{
-			final List<WorldObject> objects = WorldManager.getVisibleObjects(this);
-			for (int i = 0; i < objects.size(); i++)
+			final Collection<WorldObject> objects = WorldManager.getVisibleObjects(this);
+			for (WorldObject nearby : objects)
 			{
-				final WorldObject nearby = objects.get(i);
-				if (!nearby.isNpc())
+				if (nearby.isNpc())
 				{
-					continue;
+					asPlayer().sendPacket(new NpcInformation(nearby.asNpc()));
 				}
-				asPlayer().sendPacket(new NpcInformation(nearby.asNpc()));
 			}
 		}
 	}
@@ -149,11 +152,15 @@ public class WorldObject
 		
 		// Broadcast location to nearby players after teleporting.
 		final LocationUpdate locationUpdate = new LocationUpdate(this);
-		final List<Player> players = WorldManager.getVisiblePlayers(this);
-		final Player player = asPlayer();
-		for (int i = 0; i < players.size(); i++)
+		final Collection<Player> players = WorldManager.getVisiblePlayers(this);
+		if (players.isEmpty())
 		{
-			final Player nearby = players.get(i);
+			return;
+		}
+		
+		final Player player = asPlayer();
+		for (Player nearby : players)
+		{
 			if (nearby.isPlayer())
 			{
 				nearby.asPlayer().sendPacket(locationUpdate);
@@ -180,11 +187,15 @@ public class WorldObject
 		final RegionHolder[] regions = _region.getSurroundingRegions();
 		for (int i = 0; i < regions.length; i++)
 		{
-			final List<WorldObject> objects = regions[i].getObjects();
-			for (int j = 0; j < objects.size(); j++)
+			final Collection<WorldObject> objects = regions[i].getObjects();
+			if (objects.isEmpty())
 			{
-				final WorldObject nearby = objects.get(j);
-				if ((nearby != null) && nearby.isPlayer())
+				continue;
+			}
+			
+			for (WorldObject nearby : objects)
+			{
+				if (nearby.isPlayer())
 				{
 					nearby.asPlayer().sendPacket(delete);
 				}

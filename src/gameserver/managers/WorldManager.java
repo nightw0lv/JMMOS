@@ -1,6 +1,8 @@
 package gameserver.managers;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -147,22 +149,22 @@ public class WorldManager
 		obj.getRegion().removeObject(obj);
 	}
 	
-	public static List<WorldObject> getVisibleObjects(WorldObject obj)
+	public static Collection<WorldObject> getVisibleObjects(WorldObject obj)
 	{
-		final List<WorldObject> result = new ArrayList<>();
+		final List<WorldObject> result = new LinkedList<>();
 		final RegionHolder[] regions = obj.getRegion().getSurroundingRegions();
 		if (regions != null)
 		{
 			for (int i = 0; i < regions.length; i++)
 			{
-				final List<WorldObject> objects = regions[i].getObjects();
-				for (int j = 0; j < objects.size(); j++)
+				final Collection<WorldObject> objects = regions[i].getObjects();
+				if (objects.isEmpty())
 				{
-					final WorldObject nearby = objects.get(j);
-					if (nearby == null)
-					{
-						continue;
-					}
+					continue;
+				}
+				
+				for (WorldObject nearby : objects)
+				{
 					if (nearby.getObjectId() == obj.getObjectId())
 					{
 						continue;
@@ -175,22 +177,22 @@ public class WorldManager
 		return result;
 	}
 	
-	public static List<Player> getVisiblePlayers(WorldObject obj)
+	public static Collection<Player> getVisiblePlayers(WorldObject obj)
 	{
-		final List<Player> result = new ArrayList<>();
+		final List<Player> result = new LinkedList<>();
 		final RegionHolder[] regions = obj.getRegion().getSurroundingRegions();
 		if (regions != null)
 		{
 			for (int i = 0; i < regions.length; i++)
 			{
-				final List<WorldObject> objects = regions[i].getObjects();
-				for (int j = 0; j < objects.size(); j++)
+				final Collection<WorldObject> objects = regions[i].getObjects();
+				if (objects.isEmpty())
 				{
-					final WorldObject nearby = objects.get(j);
-					if (nearby == null)
-					{
-						continue;
-					}
+					continue;
+				}
+				
+				for (WorldObject nearby : objects)
+				{
 					if (!nearby.isPlayer())
 					{
 						continue;
@@ -214,14 +216,14 @@ public class WorldManager
 		{
 			for (int i = 0; i < regions.length; i++)
 			{
-				final List<WorldObject> objects = regions[i].getObjects();
-				for (int j = 0; j < objects.size(); j++)
+				final Collection<WorldObject> objects = regions[i].getObjects();
+				if (objects.isEmpty())
 				{
-					final WorldObject nearby = objects.get(j);
-					if (nearby == null)
-					{
-						continue;
-					}
+					continue;
+				}
+				
+				for (WorldObject nearby : objects)
+				{
 					if (!nearby.isPlayer())
 					{
 						continue;

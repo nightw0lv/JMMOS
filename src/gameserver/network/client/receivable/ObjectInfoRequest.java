@@ -1,6 +1,6 @@
 package gameserver.network.client.receivable;
 
-import java.util.List;
+import java.util.Collection;
 
 import common.managers.ThreadManager;
 import common.network.ReceivablePacket;
@@ -32,10 +32,14 @@ public class ObjectInfoRequest
 		final long objectId = packet.readLong();
 		
 		// Send the information.
-		final List<WorldObject> objects = WorldManager.getVisibleObjects(player);
-		for (int i = 0; i < objects.size(); i++)
+		final Collection<WorldObject> objects = WorldManager.getVisibleObjects(player);
+		if (objects.isEmpty())
 		{
-			WorldObject obj = objects.get(i);
+			return;
+		}
+		
+		for (WorldObject obj : objects)
+		{
 			if (obj.getObjectId() == objectId)
 			{
 				if (obj.isPlayer())

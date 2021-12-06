@@ -1,9 +1,10 @@
 package gameserver.holders;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import gameserver.actor.WorldObject;
-import gameserver.util.UnboundArrayList;
 
 /**
  * @author Pantelis Andrianakis
@@ -13,7 +14,7 @@ public class RegionHolder
 {
 	private final int _x;
 	private final int _z;
-	private final UnboundArrayList<WorldObject> _objects = new UnboundArrayList<>();
+	private final Set<WorldObject> _objects = ConcurrentHashMap.newKeySet();
 	private RegionHolder[] _surroundingRegions;
 	
 	public RegionHolder(int x, int z)
@@ -45,7 +46,7 @@ public class RegionHolder
 	
 	public void addObject(WorldObject obj)
 	{
-		_objects.addIfAbsent(obj);
+		_objects.add(obj);
 	}
 	
 	public void removeObject(WorldObject obj)
@@ -53,7 +54,7 @@ public class RegionHolder
 		_objects.remove(obj);
 	}
 	
-	public List<WorldObject> getObjects()
+	public Collection<WorldObject> getObjects()
 	{
 		return _objects;
 	}
