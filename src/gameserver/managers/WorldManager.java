@@ -29,7 +29,7 @@ public class WorldManager
 	private static final TLongObjectMap<RegionHolder> REGIONS = TCollections.synchronizedMap(new TLongObjectHashMap<RegionHolder>());
 	private static final Set<GameClient> ONLINE_CLIENTS = ConcurrentHashMap.newKeySet();
 	private static final Set<Player> PLAYER_OBJECTS = ConcurrentHashMap.newKeySet();
-	public static final int REGION_SIZE = 300;
+	public static final int REGION_SIZE = 50;
 	
 	public static void init()
 	{
