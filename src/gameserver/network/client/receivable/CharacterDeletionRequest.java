@@ -9,7 +9,6 @@ import java.util.List;
 import common.managers.DatabaseManager;
 import common.managers.LogManager;
 import common.network.ReceivablePacket;
-import common.util.Chronos;
 import gameserver.network.client.GameClient;
 import gameserver.network.client.sendable.CharacterDeletionResult;
 
@@ -58,7 +57,7 @@ public class CharacterDeletionRequest
 		}
 		
 		// Delete character. (Prefer to set access level to -1 and rename to name + deletion time.)
-		final long deleteTime = Chronos.currentTimeMillis();
+		final long deleteTime = System.currentTimeMillis();
 		try (Connection con = DatabaseManager.getConnection();
 			PreparedStatement ps = con.prepareStatement(CHARACTER_DELETION_QUERY))
 		{

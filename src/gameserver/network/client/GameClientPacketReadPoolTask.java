@@ -5,7 +5,6 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.Set;
 
-import common.util.Chronos;
 import gameserver.managers.WorldManager;
 
 /**
@@ -29,7 +28,7 @@ public class GameClientPacketReadPoolTask implements Runnable
 		long currentTime;
 		while (true)
 		{
-			executionStart = Chronos.currentTimeMillis();
+			executionStart = System.currentTimeMillis();
 			
 			// No need to iterate when pool is empty.
 			if (!_pool.isEmpty())
@@ -103,7 +102,7 @@ public class GameClientPacketReadPoolTask implements Runnable
 			}
 			
 			// Prevent high CPU caused by repeatedly looping.
-			currentTime = Chronos.currentTimeMillis();
+			currentTime = System.currentTimeMillis();
 			if ((currentTime - executionStart) < 1)
 			{
 				try

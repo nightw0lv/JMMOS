@@ -3,7 +3,6 @@ package gameserver.actor;
 import java.util.Collection;
 
 import common.managers.ThreadManager;
-import common.util.Chronos;
 import gameserver.holders.AnimationHolder;
 import gameserver.holders.LocationHolder;
 import gameserver.holders.RegionHolder;
@@ -20,7 +19,7 @@ import gameserver.network.client.sendable.NpcInformation;
 public class WorldObject
 {
 	private final long _objectId = IdManager.getNextId();
-	private final long _spawnTime = Chronos.currentTimeMillis();
+	private final long _spawnTime = System.currentTimeMillis();
 	private AnimationHolder _animations = null;
 	private final LocationHolder _location = new LocationHolder(0, -1000, 0, 0);
 	private RegionHolder _region = null;

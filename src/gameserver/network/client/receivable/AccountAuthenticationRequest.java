@@ -8,7 +8,6 @@ import common.Config;
 import common.managers.DatabaseManager;
 import common.managers.LogManager;
 import common.network.ReceivablePacket;
-import common.util.Chronos;
 import common.util.Util;
 import gameserver.GameServer;
 import gameserver.managers.WorldManager;
@@ -147,7 +146,7 @@ public class AccountAuthenticationRequest
 		try (Connection con = DatabaseManager.getConnection();
 			PreparedStatement ps = con.prepareStatement(ACCOUNT_INFO_UPDATE_QUERY))
 		{
-			ps.setLong(1, Chronos.currentTimeMillis());
+			ps.setLong(1, System.currentTimeMillis());
 			ps.setString(2, client.getIp());
 			ps.setString(3, accountName);
 			ps.execute();

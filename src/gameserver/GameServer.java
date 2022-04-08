@@ -4,7 +4,6 @@ import common.Config;
 import common.managers.DatabaseManager;
 import common.managers.LogManager;
 import common.managers.ThreadManager;
-import common.util.Chronos;
 import common.util.Util;
 import gameserver.data.ItemData;
 import gameserver.data.NpcData;
@@ -30,7 +29,7 @@ public class GameServer
 	private GameServer()
 	{
 		// Keep start time for later.
-		final long serverLoadStart = Chronos.currentTimeMillis();
+		final long serverLoadStart = System.currentTimeMillis();
 		
 		Util.printSection("Configs");
 		Config.load();
@@ -59,7 +58,7 @@ public class GameServer
 		
 		// Post info.
 		Util.printSection("Info");
-		LogManager.log("Server loaded in " + ((Chronos.currentTimeMillis() - serverLoadStart) / 1000) + " seconds.");
+		LogManager.log("Server loaded in " + ((System.currentTimeMillis() - serverLoadStart) / 1000) + " seconds.");
 		System.gc();
 		LogManager.log("Started, using " + ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1048576) + " of " + (Runtime.getRuntime().maxMemory() / 1048576) + " MB total memory.");
 		

@@ -3,7 +3,6 @@ package gameserver.network.client;
 import java.util.Set;
 
 import common.network.ReceivablePacket;
-import common.util.Chronos;
 
 /**
  * @author Pantelis Andrianakis
@@ -25,7 +24,7 @@ public class GameClientPacketExecutePoolTask implements Runnable
 		long currentTime;
 		while (true)
 		{
-			executionStart = Chronos.currentTimeMillis();
+			executionStart = System.currentTimeMillis();
 			
 			// No need to iterate when pool is empty.
 			if (!_pool.isEmpty())
@@ -55,7 +54,7 @@ public class GameClientPacketExecutePoolTask implements Runnable
 			}
 			
 			// Prevent high CPU caused by repeatedly looping.
-			currentTime = Chronos.currentTimeMillis();
+			currentTime = System.currentTimeMillis();
 			if ((currentTime - executionStart) < 1)
 			{
 				try

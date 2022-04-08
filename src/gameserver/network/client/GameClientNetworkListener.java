@@ -11,7 +11,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import common.Config;
 import common.managers.LogManager;
 import common.managers.ThreadManager;
-import common.util.Chronos;
 
 /**
  * @author Pantelis Andrianakis
@@ -49,7 +48,7 @@ public class GameClientNetworkListener
 				long currentTime;
 				while (true)
 				{
-					executionStart = Chronos.currentTimeMillis();
+					executionStart = System.currentTimeMillis();
 					
 					final SocketChannel channel = server.accept();
 					if (channel != null)
@@ -61,7 +60,7 @@ public class GameClientNetworkListener
 					}
 					
 					// Prevent high CPU caused by repeatedly polling the channel.
-					currentTime = Chronos.currentTimeMillis();
+					currentTime = System.currentTimeMillis();
 					if ((currentTime - executionStart) < 1)
 					{
 						Thread.sleep(1);
