@@ -1,22 +1,20 @@
-package gameserver.network.client;
+package common.network;
 
 import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.Set;
 
-import gameserver.managers.WorldManager;
-
 /**
  * @author Pantelis Andrianakis
  * @since September 7th 2020
  */
-public class GameClientPacketReadPoolTask implements Runnable
+public class ReadThread implements Runnable
 {
 	private final ByteBuffer _sizeBuffer = ByteBuffer.allocate(2); // Reusable size buffer.
-	private final Set<GameClient> _pool;
+	private final Set<NetClient> _pool;
 	
-	public GameClientPacketReadPoolTask(Set<GameClient> pool)
+	public ReadThread(Set<NetClient> pool)
 	{
 		_pool = pool;
 	}
@@ -34,7 +32,7 @@ public class GameClientPacketReadPoolTask implements Runnable
 			if (!_pool.isEmpty())
 			{
 				// Iterate client pool.
-				ITERATE: for (GameClient client : _pool)
+				ITERATE: for (NetClient client : _pool)
 				{
 					try
 					{
@@ -122,9 +120,9 @@ public class GameClientPacketReadPoolTask implements Runnable
 		return (_sizeBuffer.get() & 0xff) | ((_sizeBuffer.get() << 8) & 0xff00);
 	}
 	
-	private void onDisconnection(GameClient client)
+	private void onDisconnection(NetClient client)
 	{
 		_pool.remove(client);
-		WorldManager.removeClient(client);
+		client.onDisconnection();
 	}
 }

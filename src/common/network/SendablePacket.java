@@ -1,60 +1,97 @@
 package common.network;
 
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 /**
+ * Sendable packet backed up by a byte array, with a maximum raw data size of 65533 bytes.
  * @author Pantelis Andrianakis
  * @since October 29th 2020
  */
 public class SendablePacket
 {
-	private byte[] _bytes;
-	private short _size = 2; // Allocate space for size (short - max length 32767).
+	private int _position = 2; // Allocate space for size (max length 65535 - size header).
+	private byte[] _data;
+	private byte[] _sendableBytes;
+	private ByteBuffer _byteBuffer;
 	
+	/**
+	 * Construct a SendablePacket with an initial data size of 32 bytes.
+	 */
+	public SendablePacket()
+	{
+		_data = new byte[32];
+	}
+	
+	/**
+	 * Construct a SendablePacket with a given initial data size.
+	 * @param initialSize
+	 */
 	public SendablePacket(int initialSize)
 	{
-		_bytes = new byte[initialSize];
+		_data = new byte[initialSize];
 	}
 	
-	private void write(byte value)
+	public void write(byte value)
 	{
-		// Check size.
-		if (_size == _bytes.length)
+		// Check current size.
+		if (_position < 65535)
 		{
-			_bytes = Arrays.copyOf(_bytes, _bytes.length * 2);
+			// Check capacity.
+			if (_position == _data.length)
+			{
+				_data = Arrays.copyOf(_data, _data.length * 2); // Double the capacity.
+			}
+			
+			// Set value.
+			_data[_position++] = value;
+			return;
 		}
 		
-		// Set value.
-		_bytes[_size++] = value;
+		throw new IndexOutOfBoundsException("Packet data exceeded the raw data size limit of 65533!");
 	}
 	
+	/**
+	 * Write <b>boolean</b> to the packet data.<br>
+	 * 8bit integer (00) or (01)
+	 * @param value
+	 */
 	public void writeBoolean(boolean value)
 	{
-		write((byte) (value ? 1 : 0));
+		writeByte(value ? 1 : 0);
 	}
 	
-	public void writeString(String value)
+	/**
+	 * Write <b>String</b> to the packet data.
+	 * @param text
+	 */
+	public void writeString(String text)
 	{
-		if (value != null)
+		if (text != null)
 		{
 			try
 			{
-				final byte[] byteArray = value.getBytes(StandardCharsets.UTF_8);
+				final byte[] byteArray = text.getBytes(StandardCharsets.UTF_8);
 				writeShort(byteArray.length);
 				writeBytes(byteArray);
 			}
 			catch (Exception e)
 			{
-				write((byte) 0);
+				writeShort(0);
 			}
 		}
 		else
 		{
-			write((byte) 0);
+			writeShort(0);
 		}
 	}
 	
+	/**
+	 * Write <b>byte[]</b> to the packet data.<br>
+	 * 8bit integer array (00...)
+	 * @param array
+	 */
 	public void writeBytes(byte[] array)
 	{
 		for (int i = 0; i < array.length; i++)
@@ -63,17 +100,52 @@ public class SendablePacket
 		}
 	}
 	
+	/**
+	 * Write <b>byte</b> to the packet data.<br>
+	 * 8bit integer (00)
+	 * @param value
+	 */
 	public void writeByte(int value)
 	{
 		write((byte) value);
 	}
 	
+	/**
+	 * Write <b>boolean</b> to the packet data.<br>
+	 * 8bit integer (00) or (01)
+	 * @param value
+	 */
+	public void writeByte(boolean value)
+	{
+		writeByte(value ? 1 : 0);
+	}
+	
+	/**
+	 * Write <b>short</b> to the packet data.<br>
+	 * 16bit integer (00 00)
+	 * @param value
+	 */
 	public void writeShort(int value)
 	{
 		write((byte) value);
 		write((byte) (value >> 8));
 	}
 	
+	/**
+	 * Write <b>boolean</b> to the packet data.<br>
+	 * 16bit integer (00 00)
+	 * @param value
+	 */
+	public void writeShort(boolean value)
+	{
+		writeShort(value ? 1 : 0);
+	}
+	
+	/**
+	 * Write <b>int</b> to the packet data.<br>
+	 * 32bit integer (00 00 00 00)
+	 * @param value
+	 */
 	public void writeInt(int value)
 	{
 		write((byte) value);
@@ -82,6 +154,21 @@ public class SendablePacket
 		write((byte) (value >> 24));
 	}
 	
+	/**
+	 * Write <b>boolean</b> to the packet data.<br>
+	 * 32bit integer (00 00 00 00)
+	 * @param value
+	 */
+	public void writeInt(boolean value)
+	{
+		writeInt(value ? 1 : 0);
+	}
+	
+	/**
+	 * Write <b>long</b> to the packet data.<br>
+	 * 64bit integer (00 00 00 00 00 00 00 00)
+	 * @param value
+	 */
 	public void writeLong(long value)
 	{
 		write((byte) value);
@@ -94,27 +181,105 @@ public class SendablePacket
 		write((byte) (value >> 56));
 	}
 	
+	/**
+	 * Write <b>boolean</b> to the packet data.<br>
+	 * 64bit integer (00 00 00 00 00 00 00 00)
+	 * @param value
+	 */
+	public void writeLong(boolean value)
+	{
+		writeLong(value ? 1 : 0);
+	}
+	
+	/**
+	 * Write <b>float</b> to the packet data.<br>
+	 * 32bit single precision float (00 00 00 00)
+	 * @param value
+	 */
 	public void writeFloat(float value)
 	{
 		writeInt(Float.floatToRawIntBits(value));
 	}
 	
+	/**
+	 * Write <b>double</b> to the packet data.<br>
+	 * 64bit double precision float (00 00 00 00 00 00 00 00)
+	 * @param value
+	 */
 	public void writeDouble(double value)
 	{
 		writeLong(Double.doubleToRawLongBits(value));
 	}
 	
+	/**
+	 * @return <b>byte[]</b> of the sendable packet data, including a size header.
+	 */
 	public byte[] getSendableBytes()
 	{
-		// Get array of bytes.
-		final byte[] byteArray = Arrays.copyOf(_bytes, _size);
-		
-		// Add size info at start (short - max length 32767).
-		_size -= 2;
-		byteArray[0] = (byte) _size;
-		byteArray[1] = (byte) (_size >> 8);
+		return getSendableBytes(null);
+	}
+	
+	/**
+	 * @param encryption if EncryptionInterface is used.
+	 * @return <b>byte[]</b> of the sendable packet data, including a size header.
+	 */
+	public synchronized byte[] getSendableBytes(EncryptionInterface encryption)
+	{
+		// Generate sendable byte array.
+		if ((_sendableBytes == null /* Not processed */) || (encryption != null /* Encryption can change */))
+		{
+			// Trim array of data.
+			_sendableBytes = Arrays.copyOf(_data, _position);
+			
+			// Add size info at start (unsigned short - max size 65535).
+			final int position = _position - 2;
+			_sendableBytes[0] = (byte) position;
+			_sendableBytes[1] = (byte) (position >> 8);
+			
+			// Encrypt data.
+			if (encryption != null)
+			{
+				encryption.encrypt(_sendableBytes, 2, position);
+			}
+		}
 		
 		// Return the data.
-		return byteArray;
+		return _sendableBytes;
+	}
+	
+	/**
+	 * @return ByteBuffer of the sendable packet data, including a size header.
+	 */
+	public ByteBuffer getSendableByteBuffer()
+	{
+		return getSendableByteBuffer(null);
+	}
+	
+	/**
+	 * @param encryption if EncryptionInterface is used.
+	 * @return ByteBuffer of the sendable packet data, including a size header.
+	 */
+	public synchronized ByteBuffer getSendableByteBuffer(EncryptionInterface encryption)
+	{
+		// Generate sendable ByteBuffer.
+		if ((_byteBuffer == null /* Not processed */) || (encryption != null /* Encryption can change */))
+		{
+			_byteBuffer = ByteBuffer.wrap(getSendableBytes(encryption));
+		}
+		else // Rewind the buffer.
+		{
+			_byteBuffer.rewind();
+		}
+		
+		// Return the buffer.
+		return _byteBuffer;
+	}
+	
+	/**
+	 * @return The length of the data (includes size header).
+	 */
+	public int getLength()
+	{
+		return _position;
 	}
 }

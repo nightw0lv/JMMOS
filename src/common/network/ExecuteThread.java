@@ -1,20 +1,20 @@
-package gameserver.network.client;
+package common.network;
 
 import java.util.Set;
-
-import common.network.ReceivablePacket;
 
 /**
  * @author Pantelis Andrianakis
  * @since September 7th 2020
  */
-public class GameClientPacketExecutePoolTask implements Runnable
+public class ExecuteThread implements Runnable
 {
-	private final Set<GameClient> _pool;
+	private final Set<NetClient> _pool;
+	private final PacketHandlerInterface _packetHandler;
 	
-	public GameClientPacketExecutePoolTask(Set<GameClient> pool)
+	public ExecuteThread(Set<NetClient> pool, PacketHandlerInterface packetHandler)
 	{
 		_pool = pool;
+		_packetHandler = packetHandler;
 	}
 	
 	@Override
@@ -30,7 +30,7 @@ public class GameClientPacketExecutePoolTask implements Runnable
 			if (!_pool.isEmpty())
 			{
 				// Iterate client pool.
-				ITERATE: for (GameClient client : _pool)
+				ITERATE: for (NetClient client : _pool)
 				{
 					if (client.getChannel() == null)
 					{
@@ -46,7 +46,11 @@ public class GameClientPacketExecutePoolTask implements Runnable
 					
 					for (byte[] data : packetData)
 					{
-						GameClientPacketHandler.handle(client, new ReceivablePacket(data));
+						if (client.getEncryption() != null)
+						{
+							client.getEncryption().decrypt(data, 0, data.length);
+						}
+						_packetHandler.handle(client, new ReceivablePacket(data));
 						packetData.remove(data);
 						continue ITERATE; // Process only first.
 					}

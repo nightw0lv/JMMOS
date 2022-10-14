@@ -4,6 +4,7 @@ import common.Config;
 import common.managers.DatabaseManager;
 import common.managers.LogManager;
 import common.managers.ThreadManager;
+import common.network.NetServer;
 import common.util.Util;
 import gameserver.data.ItemData;
 import gameserver.data.NpcData;
@@ -11,7 +12,8 @@ import gameserver.data.SkillData;
 import gameserver.data.SpawnData;
 import gameserver.managers.ShutdownManager;
 import gameserver.managers.WorldManager;
-import gameserver.network.client.GameClientNetworkListener;
+import gameserver.network.client.GameClient;
+import gameserver.network.client.GameClientPacketHandler;
 
 /**
  * @author Pantelis Andrianakis
@@ -62,8 +64,18 @@ public class GameServer
 		System.gc();
 		LogManager.log("Started, using " + ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1048576) + " of " + (Runtime.getRuntime().maxMemory() / 1048576) + " MB total memory.");
 		
-		// Initialize server network listener.
-		GameClientNetworkListener.init();
+		// Initialize server.
+		final NetServer server = new NetServer(Config.GAMESERVER_PORT, new GameClientPacketHandler(), GameClient.class);
+		server.setName(getClass().getSimpleName());
+		server.getNetConfig().setReadPoolSize(Config.CLIENT_READ_POOL_SIZE);
+		server.getNetConfig().setExecutePoolSize(Config.CLIENT_EXECUTE_POOL_SIZE);
+		server.getNetConfig().setPacketQueueLimit(Config.PACKET_QUEUE_LIMIT);
+		server.getNetConfig().setPacketFloodDisconnect(Config.PACKET_FLOOD_DISCONNECT);
+		server.getNetConfig().setPacketFloodDrop(Config.PACKET_FLOOD_DROP);
+		server.getNetConfig().setDroppedPacketLog(Config.PACKET_FLOOD_LOG);
+		server.getNetConfig().setTcpNoDelay(Config.TCP_NO_DELAY);
+		server.getNetConfig().setConnectionTimeout(Config.CONNECTION_TIMEOUT);
+		server.start();
 		
 		// Assign shutdown hook.
 		Runtime.getRuntime().addShutdownHook(new ShutdownManager());

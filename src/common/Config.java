@@ -55,8 +55,9 @@ public final class Config
 	public static int CLIENT_READ_POOL_SIZE;
 	public static int CLIENT_EXECUTE_POOL_SIZE;
 	public static int PACKET_QUEUE_LIMIT;
-	public static boolean PACKET_QUEUE_DROP;
-	public static boolean PACKET_QUEUE_LOG;
+	public static boolean PACKET_FLOOD_DISCONNECT;
+	public static boolean PACKET_FLOOD_DROP;
+	public static boolean PACKET_FLOOD_LOG;
 	public static boolean TCP_NO_DELAY;
 	public static int CONNECTION_TIMEOUT;
 	public static int MAXIMUM_ONLINE_USERS;
@@ -76,6 +77,7 @@ public final class Config
 	public static int THREADS_PER_SCHEDULED_THREAD_POOL;
 	public static int INSTANT_THREAD_POOL_COUNT;
 	public static int THREADS_PER_INSTANT_THREAD_POOL;
+	public static boolean THREADS_FOR_CLIENT_PACKETS;
 	
 	public static void load()
 	{
@@ -109,14 +111,16 @@ public final class Config
 			INSTANT_THREAD_POOL_COUNT = Runtime.getRuntime().availableProcessors();
 		}
 		THREADS_PER_INSTANT_THREAD_POOL = threadConfigs.getInt("ThreadsPerInstantThreadPool", 2);
+		THREADS_FOR_CLIENT_PACKETS = threadConfigs.getBoolean("ThreadsForClientPackets", true);
 		
 		final ConfigReader networkConfigs = new ConfigReader(NETWORK_CONFIG_FILE);
 		GAMESERVER_PORT = networkConfigs.getInt("GameserverPort", 5055);
 		CLIENT_READ_POOL_SIZE = networkConfigs.getInt("ClientReadPoolSize", 100);
 		CLIENT_EXECUTE_POOL_SIZE = networkConfigs.getInt("ClientExecutePoolSize", 50);
 		PACKET_QUEUE_LIMIT = networkConfigs.getInt("PacketQueueLimit", 20);
-		PACKET_QUEUE_DROP = networkConfigs.getBoolean("PacketQueueDrop", false);
-		PACKET_QUEUE_LOG = networkConfigs.getBoolean("PacketQueueLog", true);
+		PACKET_FLOOD_DISCONNECT = networkConfigs.getBoolean("PacketFloodDisconnect", false);
+		PACKET_FLOOD_DROP = networkConfigs.getBoolean("PacketFloodDrop", false);
+		PACKET_FLOOD_LOG = networkConfigs.getBoolean("PacketFloodLog", true);
 		TCP_NO_DELAY = networkConfigs.getBoolean("TcpNoDelay", true);
 		CONNECTION_TIMEOUT = networkConfigs.getInt("ConnectionTimeout", 800);
 		MAXIMUM_ONLINE_USERS = networkConfigs.getInt("MaximumOnlineUsers", 2000);

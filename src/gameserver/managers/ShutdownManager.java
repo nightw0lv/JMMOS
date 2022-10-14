@@ -27,7 +27,7 @@ public class ShutdownManager extends Thread
 			if (client != null)
 			{
 				client.sendPacket(logout);
-				client.setChannel(null);
+				client.disconnect();
 			}
 		}
 		
