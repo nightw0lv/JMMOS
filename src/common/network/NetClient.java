@@ -92,7 +92,7 @@ public class NetClient
 			
 			if (_netConfig.isPacketFloodDrop())
 			{
-				if (_netConfig.isDroppedPacketLogEnabled() && ((size % _netConfig.getPacketQueueLimit()) == 0))
+				if (_netConfig.isPacketFloodLogged() && ((size % _netConfig.getPacketQueueLimit()) == 0))
 				{
 					final StringBuilder sb = new StringBuilder();
 					sb.append(this);

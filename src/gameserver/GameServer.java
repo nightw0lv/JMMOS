@@ -72,7 +72,7 @@ public class GameServer
 		server.getNetConfig().setPacketQueueLimit(Config.PACKET_QUEUE_LIMIT);
 		server.getNetConfig().setPacketFloodDisconnect(Config.PACKET_FLOOD_DISCONNECT);
 		server.getNetConfig().setPacketFloodDrop(Config.PACKET_FLOOD_DROP);
-		server.getNetConfig().setDroppedPacketLog(Config.PACKET_FLOOD_LOG);
+		server.getNetConfig().setPacketFloodLogged(Config.PACKET_FLOOD_LOGGED);
 		server.getNetConfig().setTcpNoDelay(Config.TCP_NO_DELAY);
 		server.getNetConfig().setConnectionTimeout(Config.CONNECTION_TIMEOUT);
 		server.start();

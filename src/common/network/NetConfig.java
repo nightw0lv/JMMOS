@@ -12,7 +12,7 @@ public class NetConfig
 	private int _packetQueueLimit = 80;
 	private boolean _packetFloodDisconnect = false;
 	private boolean _packetFloodDrop = false;
-	private boolean _droppedPacketLog = true;
+	private boolean _packetFloodLogged = true;
 	private boolean _tcpNoDelay = true;
 	
 	/**
@@ -120,18 +120,18 @@ public class NetConfig
 	/**
 	 * @return if dropped packets are logged.
 	 */
-	public boolean isDroppedPacketLogEnabled()
+	public boolean isPacketFloodLogged()
 	{
-		return _droppedPacketLog;
+		return _packetFloodLogged;
 	}
 	
 	/**
 	 * Sets if dropped packets are logged.
-	 * @param droppedPacketLog
+	 * @param packetFloodLogged
 	 */
-	public void setDroppedPacketLog(boolean droppedPacketLog)
+	public void setPacketFloodLogged(boolean packetFloodLogged)
 	{
-		_droppedPacketLog = droppedPacketLog;
+		_packetFloodLogged = packetFloodLogged;
 	}
 	
 	/**
