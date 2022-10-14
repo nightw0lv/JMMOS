@@ -21,7 +21,7 @@ public class WritablePacket
 	 */
 	public WritablePacket()
 	{
-		_data = new byte[32];
+		this(32);
 	}
 	
 	/**

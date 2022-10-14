@@ -3,10 +3,11 @@ package common.network;
 /**
  * @author Pantelis Andrianakis
  * @since October 4th 2022
+ * @param <E> extends NetClient
  */
-public interface PacketHandlerInterface
+public interface PacketHandlerInterface<E extends NetClient>
 {
-	default void handle(NetClient client, ReadablePacket packet)
+	default void handle(E client, ReadablePacket packet)
 	{
 	}
 }

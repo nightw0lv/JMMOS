@@ -5,13 +5,14 @@ import java.util.Set;
 /**
  * @author Pantelis Andrianakis
  * @since September 7th 2020
+ * @param <E> extends NetClient
  */
-public class ExecuteThread implements Runnable
+public class ExecuteThread<E extends NetClient> implements Runnable
 {
-	private final Set<NetClient> _pool;
-	private final PacketHandlerInterface _packetHandler;
+	private final Set<E> _pool;
+	private final PacketHandlerInterface<E> _packetHandler;
 	
-	public ExecuteThread(Set<NetClient> pool, PacketHandlerInterface packetHandler)
+	public ExecuteThread(Set<E> pool, PacketHandlerInterface<E> packetHandler)
 	{
 		_pool = pool;
 		_packetHandler = packetHandler;
@@ -30,7 +31,7 @@ public class ExecuteThread implements Runnable
 			if (!_pool.isEmpty())
 			{
 				// Iterate client pool.
-				ITERATE: for (NetClient client : _pool)
+				ITERATE: for (E client : _pool)
 				{
 					if (client.getChannel() == null)
 					{

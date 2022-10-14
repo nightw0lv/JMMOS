@@ -3,7 +3,6 @@ package gameserver.network.client;
 import common.Config;
 import common.managers.LogManager;
 import common.managers.ThreadManager;
-import common.network.NetClient;
 import common.network.PacketHandlerInterface;
 import common.network.ReadablePacket;
 import gameserver.network.client.read.AccountAuthenticationRequest;
@@ -25,26 +24,25 @@ import gameserver.network.client.read.TargetUpdateRequest;
  * @author Pantelis Andrianakis
  * @since November 7th 2018
  */
-public class PacketHandler implements PacketHandlerInterface
+public class PacketHandler implements PacketHandlerInterface<GameClient>
 {
 	@Override
-	public void handle(NetClient client, ReadablePacket packet)
+	public void handle(GameClient client, ReadablePacket packet)
 	{
 		int packetId = -1;
 		try
 		{
 			packetId = packet.readShort();
-			final GameClient gameClient = (GameClient) client;
 			if (Config.THREADS_FOR_CLIENT_PACKETS)
 			{
 				// Continue on another thread.
 				final int id = packetId;
-				ThreadManager.execute(() -> process(gameClient, packet, id));
+				ThreadManager.execute(() -> process(client, packet, id));
 			}
 			else
 			{
 				// Wait for execution.
-				process(gameClient, packet, packetId);
+				process(client, packet, packetId);
 			}
 		}
 		catch (Exception e)

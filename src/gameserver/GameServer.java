@@ -65,7 +65,7 @@ public class GameServer
 		LogManager.log("Started, using " + ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1048576) + " of " + (Runtime.getRuntime().maxMemory() / 1048576) + " MB total memory.");
 		
 		// Initialize server.
-		final NetServer server = new NetServer(Config.GAMESERVER_PORT, new PacketHandler(), GameClient.class);
+		final NetServer<GameClient> server = new NetServer<>(Config.GAMESERVER_PORT, new PacketHandler(), GameClient::new);
 		server.setName(getClass().getSimpleName());
 		server.getNetConfig().setReadPoolSize(Config.CLIENT_READ_POOL_SIZE);
 		server.getNetConfig().setExecutePoolSize(Config.CLIENT_EXECUTE_POOL_SIZE);

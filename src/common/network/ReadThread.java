@@ -8,13 +8,14 @@ import java.util.Set;
 /**
  * @author Pantelis Andrianakis
  * @since September 7th 2020
+ * @param <E> extends NetClient
  */
-public class ReadThread implements Runnable
+public class ReadThread<E extends NetClient> implements Runnable
 {
 	private final ByteBuffer _sizeBuffer = ByteBuffer.allocate(2); // Reusable size buffer.
-	private final Set<NetClient> _pool;
+	private final Set<E> _pool;
 	
-	public ReadThread(Set<NetClient> pool)
+	public ReadThread(Set<E> pool)
 	{
 		_pool = pool;
 	}
@@ -32,7 +33,7 @@ public class ReadThread implements Runnable
 			if (!_pool.isEmpty())
 			{
 				// Iterate client pool.
-				ITERATE: for (NetClient client : _pool)
+				ITERATE: for (E client : _pool)
 				{
 					try
 					{
@@ -120,7 +121,7 @@ public class ReadThread implements Runnable
 		return (_sizeBuffer.get() & 0xff) | ((_sizeBuffer.get() << 8) & 0xffff);
 	}
 	
-	private void onDisconnection(NetClient client)
+	private void onDisconnection(E client)
 	{
 		_pool.remove(client);
 		client.onDisconnection();

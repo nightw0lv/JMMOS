@@ -7,36 +7,35 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
 
 import common.managers.LogManager;
 
 /**
  * @author Pantelis Andrianakis
  * @since September 7th 2020
+ * @param <E> extends NetClient
  */
-public class NetServer
+public class NetServer<E extends NetClient>
 {
-	protected final List<Set<NetClient>> _clientReadPools = new LinkedList<>();
-	protected final List<Set<NetClient>> _clientExecutePools = new LinkedList<>();
+	protected final List<Set<E>> _clientReadPools = new LinkedList<>();
+	protected final List<Set<E>> _clientExecutePools = new LinkedList<>();
 	protected final NetConfig _netConfig = new NetConfig();
 	protected final String _hostname;
 	protected final int _port;
-	protected final Class<?> _clientClass;
-	protected final PacketHandlerInterface _packetHandler;
+	protected final Supplier<E> _clientSupplier;
+	protected final PacketHandlerInterface<E> _packetHandler;
 	protected String _name = getClass().getSimpleName();
 	
 	/**
 	 * Creates a new NetServer.
 	 * @param port that the server will listen for incoming connections.
 	 * @param packetHandler that will be used to handle incoming data.
-	 * @param clientClass that will used to create new client objects.
+	 * @param clientSupplier that will used to create new client objects.
 	 */
-	public NetServer(int port, PacketHandlerInterface packetHandler, Class<?> clientClass)
+	public NetServer(int port, PacketHandlerInterface<E> packetHandler, Supplier<E> clientSupplier)
 	{
-		_hostname = "0.0.0.0";
-		_port = port;
-		_packetHandler = packetHandler;
-		_clientClass = clientClass;
+		this("0.0.0.0", port, packetHandler, clientSupplier);
 	}
 	
 	/**
@@ -44,14 +43,14 @@ public class NetServer
 	 * @param hostname of the server, use 0.0.0.0 to bind on all available IPs.
 	 * @param port that the server will listen for incoming connections.
 	 * @param packetHandler that will be used to handle incoming data.
-	 * @param clientClass that will used to create new client objects.
+	 * @param clientSupplier that will used to create new client objects.
 	 */
-	public NetServer(String hostname, int port, PacketHandlerInterface packetHandler, Class<?> clientClass)
+	public NetServer(String hostname, int port, PacketHandlerInterface<E> packetHandler, Supplier<E> clientSupplier)
 	{
 		_hostname = hostname;
 		_port = port;
 		_packetHandler = packetHandler;
-		_clientClass = clientClass;
+		_clientSupplier = clientSupplier;
 	}
 	
 	/**
@@ -76,9 +75,9 @@ public class NetServer
 	 */
 	public void start()
 	{
-		if (_clientClass == null)
+		if (_clientSupplier == null)
 		{
-			LogManager.log(_name + ": Could not start because client Class was not set.");
+			LogManager.log(_name + ": Could not start because client Supplier was not set.");
 			return;
 		}
 		
@@ -127,14 +126,14 @@ public class NetServer
 						channel.configureBlocking(false); // Non-blocking I/O.
 						
 						// Create client.
-						final NetClient client = (NetClient) _clientClass.getDeclaredConstructor().newInstance();
+						final E client = _clientSupplier.get();
 						client.init(channel, _netConfig);
 						
 						// Add to read pool.
 						
 						// Find a pool that is not full.
 						boolean readPoolFound = false;
-						READ_POOLS: for (Set<NetClient> pool : _clientReadPools)
+						READ_POOLS: for (Set<E> pool : _clientReadPools)
 						{
 							if (pool.size() < _netConfig.getReadPoolSize())
 							{
@@ -148,10 +147,10 @@ public class NetServer
 						if (!readPoolFound)
 						{
 							// Create a new client pool.
-							final Set<NetClient> newReadPool = ConcurrentHashMap.newKeySet(_netConfig.getReadPoolSize());
+							final Set<E> newReadPool = ConcurrentHashMap.newKeySet(_netConfig.getReadPoolSize());
 							newReadPool.add(client);
 							// Create a new task for the new pool.
-							final Thread readThread = new Thread(new ReadThread(newReadPool), _name + ": Packet read thread " + _clientReadPools.size());
+							final Thread readThread = new Thread(new ReadThread<>(newReadPool), _name + ": Packet read thread " + _clientReadPools.size());
 							readThread.setPriority(Thread.MAX_PRIORITY);
 							readThread.setDaemon(true);
 							readThread.start();
@@ -163,7 +162,7 @@ public class NetServer
 						
 						// Find a pool that is not full.
 						boolean executePoolFound = false;
-						EXECUTE_POOLS: for (Set<NetClient> pool : _clientExecutePools)
+						EXECUTE_POOLS: for (Set<E> pool : _clientExecutePools)
 						{
 							if (pool.size() < _netConfig.getExecutePoolSize())
 							{
@@ -177,10 +176,10 @@ public class NetServer
 						if (!executePoolFound)
 						{
 							// Create a new client pool.
-							final Set<NetClient> newExecutePool = ConcurrentHashMap.newKeySet(_netConfig.getExecutePoolSize());
+							final Set<E> newExecutePool = ConcurrentHashMap.newKeySet(_netConfig.getExecutePoolSize());
 							newExecutePool.add(client);
 							// Create a new task for the new pool.
-							final Thread executeThread = new Thread(new ExecuteThread(newExecutePool, _packetHandler), _name + ": Packet execute thread " + _clientExecutePools.size());
+							final Thread executeThread = new Thread(new ExecuteThread<>(newExecutePool, _packetHandler), _name + ": Packet execute thread " + _clientExecutePools.size());
 							executeThread.setPriority(Thread.MAX_PRIORITY);
 							executeThread.setDaemon(true);
 							executeThread.start();
