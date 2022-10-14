@@ -233,8 +233,8 @@ public class SendablePacket
 			
 			// Add size info at start (unsigned short - max size 65535).
 			final int position = _position - 2;
-			_sendableBytes[0] = (byte) position;
-			_sendableBytes[1] = (byte) (position >> 8);
+			_sendableBytes[0] = (byte) (position & 0xff);
+			_sendableBytes[1] = (byte) ((position >> 8) & 0xffff);
 			
 			// Encrypt data.
 			if (encryption != null)

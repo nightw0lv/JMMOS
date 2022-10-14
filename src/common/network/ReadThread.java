@@ -117,7 +117,7 @@ public class ReadThread implements Runnable
 	private int calculatePacketSize()
 	{
 		_sizeBuffer.rewind();
-		return (_sizeBuffer.get() & 0xff) | ((_sizeBuffer.get() << 8) & 0xff00);
+		return (_sizeBuffer.get() & 0xff) | ((_sizeBuffer.get() << 8) & 0xffff);
 	}
 	
 	private void onDisconnection(NetClient client)
