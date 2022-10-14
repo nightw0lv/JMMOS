@@ -5,7 +5,7 @@ import common.managers.ThreadManager;
 import gameserver.GameServer;
 import gameserver.actor.Player;
 import gameserver.network.client.GameClient;
-import gameserver.network.client.sendable.Logout;
+import gameserver.network.client.write.Logout;
 
 /**
  * @author Pantelis Andrianakis

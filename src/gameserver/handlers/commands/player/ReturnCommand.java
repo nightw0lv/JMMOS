@@ -2,7 +2,7 @@ package gameserver.handlers.commands.player;
 
 import common.Config;
 import gameserver.actor.Player;
-import gameserver.network.client.sendable.LocationUpdate;
+import gameserver.network.client.write.LocationUpdate;
 
 /**
  * @author Pantelis Andrianakis

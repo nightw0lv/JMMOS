@@ -9,12 +9,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import common.Config;
 import common.managers.LogManager;
-import common.network.SendablePacket;
+import common.network.WritablePacket;
 import gameserver.actor.Player;
 import gameserver.actor.WorldObject;
 import gameserver.holders.RegionHolder;
 import gameserver.network.client.GameClient;
-import gameserver.network.client.sendable.DeleteObject;
+import gameserver.network.client.write.DeleteObject;
 import gnu.trove.TCollections;
 import gnu.trove.map.TLongObjectMap;
 import gnu.trove.map.hash.TLongObjectHashMap;
@@ -209,7 +209,7 @@ public class WorldManager
 		return result;
 	}
 	
-	public static void broadcastPacketToVisiblePlayers(WorldObject obj, SendablePacket packet)
+	public static void broadcastPacketToVisiblePlayers(WorldObject obj, WritablePacket packet)
 	{
 		final RegionHolder[] regions = obj.getRegion().getSurroundingRegions();
 		if (regions != null)

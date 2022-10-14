@@ -8,7 +8,7 @@ import gameserver.handlers.commands.admin.SpawnCommand;
 import gameserver.handlers.commands.player.LocCommand;
 import gameserver.handlers.commands.player.ReturnCommand;
 import gameserver.handlers.commands.player.TellCommand;
-import gameserver.network.client.sendable.ChatResult;
+import gameserver.network.client.write.ChatResult;
 
 /**
  * @author Pantelis Andrianakis

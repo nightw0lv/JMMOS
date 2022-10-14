@@ -8,9 +8,9 @@ import gameserver.holders.LocationHolder;
 import gameserver.holders.RegionHolder;
 import gameserver.managers.IdManager;
 import gameserver.managers.WorldManager;
-import gameserver.network.client.sendable.DeleteObject;
-import gameserver.network.client.sendable.LocationUpdate;
-import gameserver.network.client.sendable.NpcInformation;
+import gameserver.network.client.write.DeleteObject;
+import gameserver.network.client.write.LocationUpdate;
+import gameserver.network.client.write.NpcInformation;
 
 /**
  * @author Pantelis Andrianakis

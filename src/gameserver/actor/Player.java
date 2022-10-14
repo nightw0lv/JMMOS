@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 
 import common.managers.DatabaseManager;
 import common.managers.LogManager;
-import common.network.SendablePacket;
+import common.network.WritablePacket;
 import gameserver.holders.LocationHolder;
 import gameserver.items.Inventory;
 import gameserver.network.client.GameClient;
@@ -174,7 +174,7 @@ public class Player extends Creature
 		return _inventory;
 	}
 	
-	public void sendPacket(SendablePacket packet)
+	public void sendPacket(WritablePacket packet)
 	{
 		_client.sendPacket(packet);
 	}

@@ -12,7 +12,7 @@ import gameserver.data.SpawnData;
 import gameserver.holders.LocationHolder;
 import gameserver.managers.ChatManager;
 import gameserver.managers.WorldManager;
-import gameserver.network.client.sendable.NpcInformation;
+import gameserver.network.client.write.NpcInformation;
 
 /**
  * @author Pantelis Andrianakis

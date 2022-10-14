@@ -1,7 +1,7 @@
 package gameserver.network.client;
 
 import common.network.NetClient;
-import common.network.SendablePacket;
+import common.network.WritablePacket;
 import gameserver.actor.Player;
 import gameserver.managers.WorldManager;
 
@@ -34,7 +34,7 @@ public class GameClient extends NetClient
 		_activeChar = activeChar;
 	}
 	
-	public void sendPacket(SendablePacket packet)
+	public void sendPacket(WritablePacket packet)
 	{
 		if ((getChannel() != null) && getChannel().isConnected())
 		{

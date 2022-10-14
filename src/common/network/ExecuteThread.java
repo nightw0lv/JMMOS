@@ -50,7 +50,7 @@ public class ExecuteThread implements Runnable
 						{
 							client.getEncryption().decrypt(data, 0, data.length);
 						}
-						_packetHandler.handle(client, new ReceivablePacket(data));
+						_packetHandler.handle(client, new ReadablePacket(data));
 						packetData.remove(data);
 						continue ITERATE; // Process only first.
 					}

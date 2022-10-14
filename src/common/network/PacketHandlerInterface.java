@@ -6,7 +6,7 @@ package common.network;
  */
 public interface PacketHandlerInterface
 {
-	default void handle(NetClient client, ReceivablePacket packet)
+	default void handle(NetClient client, ReadablePacket packet)
 	{
 	}
 }
