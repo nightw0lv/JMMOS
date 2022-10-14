@@ -73,7 +73,7 @@ public class SendablePacket
 			try
 			{
 				final byte[] byteArray = text.getBytes(StandardCharsets.UTF_8);
-				writeShort(byteArray.length);
+				writeShort(byteArray.length & 0xffff);
 				writeBytes(byteArray);
 			}
 			catch (Exception e)

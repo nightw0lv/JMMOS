@@ -130,8 +130,6 @@ public class NetServer
 						final NetClient client = (NetClient) _clientClass.getDeclaredConstructor().newInstance();
 						client.init(channel, _netConfig);
 						
-						System.out.println(client);
-						
 						// Add to read pool.
 						
 						// Find a pool that is not full.

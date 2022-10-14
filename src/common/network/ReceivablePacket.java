@@ -35,7 +35,7 @@ public class ReceivablePacket
 		String result = "";
 		try
 		{
-			result = new String(readBytes(readShort()), StandardCharsets.UTF_8);
+			result = new String(readBytes(readShort() & 0xffff), StandardCharsets.UTF_8);
 		}
 		catch (Exception ignored)
 		{
