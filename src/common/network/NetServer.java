@@ -31,7 +31,7 @@ public class NetServer<E extends NetClient>
 	 * Creates a new NetServer.
 	 * @param port that the server will listen for incoming connections.
 	 * @param packetHandler that will be used to handle incoming data.
-	 * @param clientSupplier that will used to create new client objects.
+	 * @param clientSupplier that will be used to create new client objects.
 	 */
 	public NetServer(int port, PacketHandlerInterface<E> packetHandler, Supplier<E> clientSupplier)
 	{
@@ -43,7 +43,7 @@ public class NetServer<E extends NetClient>
 	 * @param hostname of the server, use 0.0.0.0 to bind on all available IPs.
 	 * @param port that the server will listen for incoming connections.
 	 * @param packetHandler that will be used to handle incoming data.
-	 * @param clientSupplier that will used to create new client objects.
+	 * @param clientSupplier that will be used to create new client objects.
 	 */
 	public NetServer(String hostname, int port, PacketHandlerInterface<E> packetHandler, Supplier<E> clientSupplier)
 	{
