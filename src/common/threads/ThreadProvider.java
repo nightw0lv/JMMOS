@@ -18,7 +18,7 @@ public class ThreadProvider implements ThreadFactory
 	@Override
 	public Thread newThread(Runnable runnable)
 	{
-		final Thread thread = new Thread(null, runnable, _name, 0);
+		final Thread thread = new Thread(runnable, _name);
 		thread.setPriority(Thread.NORM_PRIORITY);
 		thread.setDaemon(false);
 		return thread;
