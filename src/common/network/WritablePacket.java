@@ -9,7 +9,7 @@ import java.util.Arrays;
  * @author Pantelis Andrianakis
  * @since October 29th 2020
  */
-public class WritablePacket
+public abstract class WritablePacket
 {
 	private int _position = 2; // Allocate space for size (max length 65535 - size header).
 	private byte[] _data;
