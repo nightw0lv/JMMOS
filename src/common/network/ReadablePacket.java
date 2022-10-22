@@ -9,7 +9,7 @@ import java.nio.charset.StandardCharsets;
 public class ReadablePacket
 {
 	private final byte[] _bytes;
-	private short _position = 0;
+	private int _position = 0;
 	
 	public ReadablePacket(byte[] bytes)
 	{
