@@ -1,8 +1,8 @@
 package common.network;
 
 import java.nio.channels.SocketChannel;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import common.managers.LogManager;
 
@@ -15,7 +15,7 @@ public class NetClient
 	private String _ip;
 	private SocketChannel _channel;
 	private NetConfig _netConfig;
-	private Set<byte[]> _pendingPacketData;
+	private Queue<byte[]> _pendingPacketData;
 	
 	/**
 	 * Initialize the client.
@@ -26,7 +26,7 @@ public class NetClient
 	{
 		_channel = channel;
 		_netConfig = netConfig;
-		_pendingPacketData = ConcurrentHashMap.newKeySet(_netConfig.getPacketQueueLimit());
+		_pendingPacketData = new ConcurrentLinkedQueue<>();
 		
 		try
 		{
@@ -114,7 +114,7 @@ public class NetClient
 	/**
 	 * @return the pending packet data.
 	 */
-	public Set<byte[]> getPacketData()
+	public Queue<byte[]> getPacketData()
 	{
 		return _pendingPacketData;
 	}
