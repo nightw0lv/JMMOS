@@ -1,6 +1,5 @@
 package common.network;
 
-import java.util.Queue;
 import java.util.Set;
 
 /**
@@ -40,13 +39,12 @@ public class ExecuteThread<E extends NetClient> implements Runnable
 						continue ITERATE;
 					}
 					
-					final Queue<byte[]> packetData = client.getPacketData();
-					if (packetData.isEmpty())
+					final byte[] data = client.getPacketData().poll();
+					if (data == null)
 					{
 						continue ITERATE;
 					}
 					
-					final byte[] data = packetData.poll();
 					if (client.getEncryption() != null)
 					{
 						client.getEncryption().decrypt(data, 0, data.length);
