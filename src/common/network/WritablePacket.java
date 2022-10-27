@@ -11,15 +11,15 @@ import java.util.Arrays;
  */
 public abstract class WritablePacket
 {
-	private int _position = 2; // Allocate space for size (max length 65535 - size header).
 	private byte[] _data;
 	private byte[] _sendableBytes;
 	private ByteBuffer _byteBuffer;
+	private int _position = 2; // Allocate space for size (max length 65535 - size header).
 	
 	/**
 	 * Construct a WritablePacket with an initial data size of 32 bytes.
 	 */
-	public WritablePacket()
+	protected WritablePacket()
 	{
 		this(32);
 	}
@@ -28,7 +28,7 @@ public abstract class WritablePacket
 	 * Construct a WritablePacket with a given initial data size.
 	 * @param initialSize
 	 */
-	public WritablePacket(int initialSize)
+	protected WritablePacket(int initialSize)
 	{
 		_data = new byte[initialSize];
 	}
