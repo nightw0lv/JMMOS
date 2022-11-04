@@ -29,26 +29,24 @@ public class PacketHandler implements PacketHandlerInterface<GameClient>
 	@Override
 	public void handle(GameClient client, ReadablePacket packet)
 	{
-		int packetId = -1;
-		try
+		final int packetId = packet.readShort();
+		
+		// Continue on another thread.
+		if (Config.THREADS_FOR_CLIENT_PACKETS)
 		{
-			packetId = packet.readShort();
-			if (Config.THREADS_FOR_CLIENT_PACKETS)
+			ThreadManager.execute(new PacketHandlerExecuteTask(client, packet, packetId));
+		}
+		else // Wait for execution.
+		{
+			try
 			{
-				// Continue on another thread.
-				final int id = packetId;
-				ThreadManager.execute(() -> process(client, packet, id));
-			}
-			else
-			{
-				// Wait for execution.
 				process(client, packet, packetId);
 			}
-		}
-		catch (Exception e)
-		{
-			LogManager.log("GameClientPacketHandler: Problem with " + client + " [Packet id: " + packetId + "]");
-			LogManager.log(e);
+			catch (Exception e)
+			{
+				LogManager.log("PacketHandler: Problem with " + client + " [Packet id: " + packetId + "]");
+				LogManager.log(e);
+			}
 		}
 	}
 	
@@ -128,7 +126,35 @@ public class PacketHandler implements PacketHandlerInterface<GameClient>
 			}
 			default:
 			{
-				LogManager.log("GameClientPacketHandler: Received unknown packet id " + packetId + " from " + client);
+				LogManager.log("PacketHandler: Received unknown packet id " + packetId + " from " + client);
+			}
+		}
+	}
+	
+	private class PacketHandlerExecuteTask implements Runnable
+	{
+		private final GameClient _client;
+		private final ReadablePacket _packet;
+		private final int _packetId;
+		
+		public PacketHandlerExecuteTask(GameClient client, ReadablePacket packet, int packetId)
+		{
+			_client = client;
+			_packet = packet;
+			_packetId = packetId;
+		}
+		
+		@Override
+		public void run()
+		{
+			try
+			{
+				process(_client, _packet, _packetId);
+			}
+			catch (Exception e)
+			{
+				LogManager.log("PacketHandlerExecuteTask: Problem with " + _client + " [Packet id: " + _packetId + "]");
+				LogManager.log(e);
 			}
 		}
 	}
