@@ -46,7 +46,7 @@ public class PacketHandler implements PacketHandlerInterface<GameClient>
 		// Continue on another thread.
 		if (Config.THREADS_FOR_CLIENT_PACKETS)
 		{
-			ThreadManager.execute(new PacketHandlerExecuteTask(client, packet, packetId));
+			ThreadManager.execute(new ExecuteTask(client, packet, packetId));
 		}
 		else // Wait for execution.
 		{
@@ -143,13 +143,13 @@ public class PacketHandler implements PacketHandlerInterface<GameClient>
 		}
 	}
 	
-	private class PacketHandlerExecuteTask implements Runnable
+	private class ExecuteTask implements Runnable
 	{
 		private final GameClient _client;
 		private final ReadablePacket _packet;
 		private final int _packetId;
 		
-		public PacketHandlerExecuteTask(GameClient client, ReadablePacket packet, int packetId)
+		public ExecuteTask(GameClient client, ReadablePacket packet, int packetId)
 		{
 			_client = client;
 			_packet = packet;
@@ -165,7 +165,7 @@ public class PacketHandler implements PacketHandlerInterface<GameClient>
 			}
 			catch (Exception e)
 			{
-				LogManager.log("PacketHandlerExecuteTask: Problem with " + _client + " [Packet id: " + _packetId + "]");
+				LogManager.log("PacketHandler->ExecuteTask: Problem with " + _client + " [Packet id: " + _packetId + "]");
 				LogManager.log(e);
 			}
 		}
