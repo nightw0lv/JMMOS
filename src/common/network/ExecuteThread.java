@@ -2,6 +2,8 @@ package common.network;
 
 import java.util.Set;
 
+import common.managers.LogManager;
+
 /**
  * @author Pantelis Andrianakis
  * @since September 7th 2020
@@ -47,7 +49,15 @@ public class ExecuteThread<E extends NetClient> implements Runnable
 					
 					if (client.getEncryption() != null)
 					{
-						client.getEncryption().decrypt(data, 0, data.length);
+						try
+						{
+							client.getEncryption().decrypt(data, 0, data.length);
+						}
+						catch (Exception e)
+						{
+							LogManager.log("ExecuteThread: Problem with " + client + " data decryption.");
+							LogManager.log(e);
+						}
 					}
 					_packetHandler.handle(client, new ReadablePacket(data));
 				}
