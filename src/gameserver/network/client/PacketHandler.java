@@ -29,7 +29,19 @@ public class PacketHandler implements PacketHandlerInterface<GameClient>
 	@Override
 	public void handle(GameClient client, ReadablePacket packet)
 	{
-		final int packetId = packet.readShort();
+		// Read packet id.
+		int packetId = -1;
+		try
+		{
+			packetId = packet.readShort();
+		}
+		catch (Exception e)
+		{
+			LogManager.log("PacketHandler: Problem receiving packet id from " + client);
+			LogManager.log(e);
+			client.disconnect();
+			return;
+		}
 		
 		// Continue on another thread.
 		if (Config.THREADS_FOR_CLIENT_PACKETS)
