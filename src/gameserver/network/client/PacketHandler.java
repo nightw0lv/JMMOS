@@ -30,7 +30,7 @@ public class PacketHandler implements PacketHandlerInterface<GameClient>
 	public void handle(GameClient client, ReadablePacket packet)
 	{
 		// Read packet id.
-		int packetId = -1;
+		final int packetId;
 		try
 		{
 			packetId = packet.readShort();
