@@ -57,6 +57,8 @@ public class ExecuteThread<E extends NetClient> implements Runnable
 						{
 							LogManager.log("ExecuteThread: Problem with " + client + " data decryption.");
 							LogManager.log(e);
+							client.disconnect();
+							continue ITERATE;
 						}
 					}
 					_packetHandler.handle(client, new ReadablePacket(data));
