@@ -39,7 +39,7 @@ public class DatabaseManager
 			}
 			catch (Exception e)
 			{
-				LogManager.log("DatabaseManager: Cound not get a connection.");
+				LogManager.log("DatabaseManager: Could not get a connection.");
 				LogManager.log(e);
 			}
 		}
