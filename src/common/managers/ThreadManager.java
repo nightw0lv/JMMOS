@@ -42,7 +42,6 @@ public class ThreadManager
 		// Log information.
 		LogManager.log("...scheduled pool executor with " + Config.SCHEDULED_THREAD_POOL_SIZE + " total threads.");
 		LogManager.log("...instant pool executor with " + Config.INSTANT_THREAD_POOL_SIZE + " total threads.");
-		
 	}
 	
 	public static void purge()
