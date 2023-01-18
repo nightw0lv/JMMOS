@@ -73,10 +73,8 @@ public final class Config
 	// --------------------------------------------------
 	// Threads
 	// --------------------------------------------------
-	public static int SCHEDULED_THREAD_POOL_COUNT;
-	public static int THREADS_PER_SCHEDULED_THREAD_POOL;
-	public static int INSTANT_THREAD_POOL_COUNT;
-	public static int THREADS_PER_INSTANT_THREAD_POOL;
+	public static int SCHEDULED_THREAD_POOL_SIZE;
+	public static int INSTANT_THREAD_POOL_SIZE;
 	public static boolean THREADS_FOR_CLIENT_PACKETS;
 	
 	public static void load()
@@ -99,18 +97,16 @@ public final class Config
 		LOG_ADMIN = loggingConfigs.getBoolean("LogAdmin", true);
 		
 		final ConfigReader threadConfigs = new ConfigReader(THREADS_CONFIG_FILE);
-		SCHEDULED_THREAD_POOL_COUNT = threadConfigs.getInt("ScheduledThreadPoolCount", -1);
-		if (SCHEDULED_THREAD_POOL_COUNT == -1)
+		SCHEDULED_THREAD_POOL_SIZE = threadConfigs.getInt("ScheduledThreadPoolSize", -1);
+		if (SCHEDULED_THREAD_POOL_SIZE == -1)
 		{
-			SCHEDULED_THREAD_POOL_COUNT = Runtime.getRuntime().availableProcessors();
+			SCHEDULED_THREAD_POOL_SIZE = Runtime.getRuntime().availableProcessors() * 4;
 		}
-		THREADS_PER_SCHEDULED_THREAD_POOL = threadConfigs.getInt("ThreadsPerScheduledThreadPool", 4);
-		INSTANT_THREAD_POOL_COUNT = threadConfigs.getInt("InstantThreadPoolCount", -1);
-		if (INSTANT_THREAD_POOL_COUNT == -1)
+		INSTANT_THREAD_POOL_SIZE = threadConfigs.getInt("InstantThreadPoolSize", -1);
+		if (INSTANT_THREAD_POOL_SIZE == -1)
 		{
-			INSTANT_THREAD_POOL_COUNT = Runtime.getRuntime().availableProcessors();
+			INSTANT_THREAD_POOL_SIZE = Runtime.getRuntime().availableProcessors() * 2;
 		}
-		THREADS_PER_INSTANT_THREAD_POOL = threadConfigs.getInt("ThreadsPerInstantThreadPool", 2);
 		THREADS_FOR_CLIENT_PACKETS = threadConfigs.getBoolean("ThreadsForClientPackets", true);
 		
 		final ConfigReader networkConfigs = new ConfigReader(NETWORK_CONFIG_FILE);

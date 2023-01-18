@@ -1,6 +1,6 @@
 package common.managers;
 
-import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -12,71 +12,43 @@ import common.threads.RunnableWrapper;
 import common.threads.ThreadProvider;
 
 /**
- * This class handles thread pooling system.<br>
- * It relies on two ThreadPoolExecutor arrays, which pool size is set using config.<br>
- * Those arrays hold following pools:<br>
- * <ul>
- * <li>Scheduled pool keeps a track about incoming, future events.</li>
- * <li>Instant pool handles short-life events.</li>
- * </ul>
+ * This class is a thread pool manager that handles two types of thread pools, the scheduled pool and the instant pool, using a ScheduledThreadPoolExecutor and a ThreadPoolExecutor respectively.<br>
+ * It uses the Config class to set the size of the pools and has a method to remove old tasks. It also provides scheduling methods and logs useful information in case of exceptions.
+ * @author Pantelis Andrianakis
  */
-public final class ThreadManager
+public class ThreadManager
 {
-	private static final ScheduledThreadPoolExecutor[] SCHEDULED_POOLS = new ScheduledThreadPoolExecutor[Config.SCHEDULED_THREAD_POOL_COUNT];
-	private static final ThreadPoolExecutor[] INSTANT_POOLS = new ThreadPoolExecutor[Config.INSTANT_THREAD_POOL_COUNT];
+	private static final ScheduledThreadPoolExecutor SCHEDULED_POOL = new ScheduledThreadPoolExecutor(Config.SCHEDULED_THREAD_POOL_SIZE, new ThreadProvider("JMMOS ScheduledThread"), new ThreadPoolExecutor.CallerRunsPolicy());
+	private static final ThreadPoolExecutor INSTANT_POOL = new ThreadPoolExecutor(Config.INSTANT_THREAD_POOL_SIZE, Integer.MAX_VALUE, 1, TimeUnit.MINUTES, new LinkedBlockingQueue<>(), new ThreadProvider("JMMOS Thread"));
 	private static final long MAX_DELAY = 3155695200000L; // One hundred years.
-	private static int SCHEDULED_THREAD_RANDOMIZER = 0;
-	private static int INSTANT_THREAD_RANDOMIZER = 0;
+	private static final long MIN_DELAY = 0L;
 	
 	public static void init()
 	{
 		LogManager.log("ThreadManager: Initialized");
 		
-		// Feed scheduled pool.
-		for (int i = 0; i < Config.SCHEDULED_THREAD_POOL_COUNT; i++)
-		{
-			SCHEDULED_POOLS[i] = new ScheduledThreadPoolExecutor(Config.THREADS_PER_SCHEDULED_THREAD_POOL, new ThreadProvider("JMMOS ScheduledThread " + i));
-		}
+		// Configure ScheduledThreadPoolExecutor.
+		SCHEDULED_POOL.setRejectedExecutionHandler(new RejectedExecutionHandlerImpl());
+		SCHEDULED_POOL.setRemoveOnCancelPolicy(true);
+		SCHEDULED_POOL.prestartAllCoreThreads();
 		
-		LogManager.log("..." + Config.SCHEDULED_THREAD_POOL_COUNT + " scheduled pool executors with " + (Config.SCHEDULED_THREAD_POOL_COUNT * Config.THREADS_PER_SCHEDULED_THREAD_POOL) + " total threads.");
+		// Configure ThreadPoolExecutor.
+		INSTANT_POOL.setRejectedExecutionHandler(new RejectedExecutionHandlerImpl());
+		INSTANT_POOL.prestartAllCoreThreads();
 		
-		// Feed instant pool.
-		for (int i = 0; i < Config.INSTANT_THREAD_POOL_COUNT; i++)
-		{
-			INSTANT_POOLS[i] = new ThreadPoolExecutor(Config.THREADS_PER_INSTANT_THREAD_POOL, Config.THREADS_PER_INSTANT_THREAD_POOL, 0, TimeUnit.SECONDS, new ArrayBlockingQueue<>(100000), new ThreadProvider("JMMOS ExecuteThread " + i));
-		}
-		
-		LogManager.log("..." + Config.INSTANT_THREAD_POOL_COUNT + " instant pool executors with " + (Config.INSTANT_THREAD_POOL_COUNT * Config.THREADS_PER_INSTANT_THREAD_POOL) + " total threads.");
-		
-		// Prestart core threads.
-		for (ScheduledThreadPoolExecutor threadPool : SCHEDULED_POOLS)
-		{
-			threadPool.setRejectedExecutionHandler(new RejectedExecutionHandlerImpl());
-			threadPool.setRemoveOnCancelPolicy(true);
-			threadPool.prestartAllCoreThreads();
-		}
-		
-		for (ThreadPoolExecutor threadPool : INSTANT_POOLS)
-		{
-			threadPool.setRejectedExecutionHandler(new RejectedExecutionHandlerImpl());
-			threadPool.prestartAllCoreThreads();
-		}
-		
-		// Launch purge task.
+		// Schedule the purge task.
 		scheduleAtFixedRate(ThreadManager::purge, 60000, 60000);
+		
+		// Log information.
+		LogManager.log("...scheduled pool executor with " + Config.SCHEDULED_THREAD_POOL_SIZE + " total threads.");
+		LogManager.log("...instant pool executor with " + Config.INSTANT_THREAD_POOL_SIZE + " total threads.");
+		
 	}
 	
 	public static void purge()
 	{
-		for (ScheduledThreadPoolExecutor threadPool : SCHEDULED_POOLS)
-		{
-			threadPool.purge();
-		}
-		
-		for (ThreadPoolExecutor threadPool : INSTANT_POOLS)
-		{
-			threadPool.purge();
-		}
+		SCHEDULED_POOL.purge();
+		INSTANT_POOL.purge();
 	}
 	
 	/**
@@ -89,7 +61,7 @@ public final class ThreadManager
 	{
 		try
 		{
-			return SCHEDULED_POOLS[SCHEDULED_THREAD_RANDOMIZER++ % Config.SCHEDULED_THREAD_POOL_COUNT].schedule(new RunnableWrapper(runnable), validate(delay), TimeUnit.MILLISECONDS);
+			return SCHEDULED_POOL.schedule(new RunnableWrapper(runnable), validate(delay), TimeUnit.MILLISECONDS);
 		}
 		catch (Exception e)
 		{
@@ -109,7 +81,7 @@ public final class ThreadManager
 	{
 		try
 		{
-			return SCHEDULED_POOLS[SCHEDULED_THREAD_RANDOMIZER++ % Config.SCHEDULED_THREAD_POOL_COUNT].scheduleAtFixedRate(new RunnableWrapper(runnable), validate(initialDelay), validate(period), TimeUnit.MILLISECONDS);
+			return SCHEDULED_POOL.scheduleAtFixedRate(new RunnableWrapper(runnable), validate(initialDelay), validate(period), TimeUnit.MILLISECONDS);
 		}
 		catch (Exception e)
 		{
@@ -126,7 +98,7 @@ public final class ThreadManager
 	{
 		try
 		{
-			INSTANT_POOLS[INSTANT_THREAD_RANDOMIZER++ % Config.INSTANT_THREAD_POOL_COUNT].execute(new RunnableWrapper(runnable));
+			INSTANT_POOL.execute(new RunnableWrapper(runnable));
 		}
 		catch (Exception e)
 		{
@@ -136,16 +108,16 @@ public final class ThreadManager
 	
 	/**
 	 * @param delay : the delay to validate.
-	 * @return a valid value, from 0 to MAX_DELAY.
+	 * @return a valid value, from MIN_DELAY to MAX_DELAY.
 	 */
 	private static long validate(long delay)
 	{
-		if (delay < 0)
+		if (delay < MIN_DELAY)
 		{
 			final Exception e = new Exception();
 			LogManager.log("ThreadManager found delay " + delay + "!");
 			LogManager.log(e);
-			return 0;
+			return MIN_DELAY;
 		}
 		if (delay > MAX_DELAY)
 		{
@@ -165,16 +137,8 @@ public final class ThreadManager
 		try
 		{
 			LogManager.log("ThreadManager: Shutting down.");
-			
-			for (ScheduledThreadPoolExecutor threadPool : SCHEDULED_POOLS)
-			{
-				threadPool.shutdownNow();
-			}
-			
-			for (ThreadPoolExecutor threadPool : INSTANT_POOLS)
-			{
-				threadPool.shutdownNow();
-			}
+			SCHEDULED_POOL.shutdownNow();
+			INSTANT_POOL.shutdownNow();
 		}
 		catch (Throwable t)
 		{
