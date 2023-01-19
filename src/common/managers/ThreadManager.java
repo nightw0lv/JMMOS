@@ -113,16 +113,14 @@ public class ThreadManager
 	{
 		if (delay < MIN_DELAY)
 		{
-			final Exception e = new Exception();
 			LogManager.log("ThreadManager found delay " + delay + "!");
-			LogManager.log(e);
+			LogManager.log(new Exception());
 			return MIN_DELAY;
 		}
 		if (delay > MAX_DELAY)
 		{
-			final Exception e = new Exception();
 			LogManager.log("ThreadManager found delay " + delay + "!");
-			LogManager.log(e);
+			LogManager.log(new Exception());
 			return MAX_DELAY;
 		}
 		return delay;
