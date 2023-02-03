@@ -7,6 +7,7 @@ import gameserver.handlers.commands.admin.DeleteCommand;
 import gameserver.handlers.commands.admin.SpawnCommand;
 import gameserver.handlers.commands.player.LocCommand;
 import gameserver.handlers.commands.player.ReturnCommand;
+import gameserver.handlers.commands.player.RollCommand;
 import gameserver.handlers.commands.player.TellCommand;
 import gameserver.network.client.write.ChatResult;
 
@@ -16,7 +17,7 @@ import gameserver.network.client.write.ChatResult;
  */
 public class ChatManager
 {
-	private static final byte CHAT_TYPE_SYSTEM = 0;
+	public static final byte CHAT_TYPE_SYSTEM = 0;
 	private static final byte CHAT_TYPE_NORMAL = 1;
 	private static final byte CHAT_TYPE_MESSAGE = 2;
 	private static final String SYS_NAME = "System";
@@ -25,6 +26,7 @@ public class ChatManager
 	private static final String COMMAND_PERSONAL_MESSAGE = "/tell ";
 	private static final String COMMAND_LOCATION = "/loc";
 	private static final String COMMAND_RETURN = "/return";
+	private static final String COMMAND_ROLL = "/roll";
 	// Administrator commands
 	private static final String COMMAND_SPAWN = "/spawn ";
 	private static final String COMMAND_DELETE = "/delete";
@@ -52,6 +54,11 @@ public class ChatManager
 			else if (lowercaseMessage.equals(COMMAND_RETURN))
 			{
 				ReturnCommand.handle(sender);
+				return;
+			}
+			else if (lowercaseMessage.startsWith(COMMAND_ROLL))
+			{
+				RollCommand.handle(sender);
 				return;
 			}
 			else if (lowercaseMessage.startsWith(COMMAND_PERSONAL_MESSAGE))
