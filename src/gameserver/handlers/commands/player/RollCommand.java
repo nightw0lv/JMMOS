@@ -24,7 +24,7 @@ public class RollCommand
 		sb.append(" (1-100)");
 		
 		// Send the ChatResult to player and other nearby visible players.
-		final ChatResult chatResult = new ChatResult(ChatManager.CHAT_TYPE_SYSTEM, "System", sb.toString());
+		final ChatResult chatResult = new ChatResult(ChatManager.CHAT_TYPE_SYSTEM, ChatManager.SYS_NAME, sb.toString());
 		player.sendPacket(chatResult);
 		WorldManager.broadcastPacketToVisiblePlayers(player, chatResult);
 		

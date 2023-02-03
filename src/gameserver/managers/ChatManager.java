@@ -18,9 +18,9 @@ import gameserver.network.client.write.ChatResult;
 public class ChatManager
 {
 	public static final byte CHAT_TYPE_SYSTEM = 0;
-	private static final byte CHAT_TYPE_NORMAL = 1;
-	private static final byte CHAT_TYPE_MESSAGE = 2;
-	private static final String SYS_NAME = "System";
+	public static final byte CHAT_TYPE_NORMAL = 1;
+	public static final byte CHAT_TYPE_MESSAGE = 2;
+	public static final String SYS_NAME = "System";
 	private static final String MSG_TO = "To ";
 	// Normal player commands
 	private static final String COMMAND_PERSONAL_MESSAGE = "/tell ";
