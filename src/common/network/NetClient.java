@@ -182,6 +182,14 @@ public class NetClient
 	}
 	
 	/**
+	 * @return the network configurations of this client.
+	 */
+	public NetConfig getNetConfig()
+	{
+		return _netConfig;
+	}
+	
+	/**
 	 * @return the IP address of this client.
 	 */
 	public String getIp()

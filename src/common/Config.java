@@ -58,6 +58,7 @@ public final class Config
 	public static boolean PACKET_FLOOD_DISCONNECT;
 	public static boolean PACKET_FLOOD_DROP;
 	public static boolean PACKET_FLOOD_LOGGED;
+	public static boolean FAILED_DECRYPTION_LOGGED;
 	public static boolean TCP_NO_DELAY;
 	public static int CONNECTION_TIMEOUT;
 	public static int MAXIMUM_ONLINE_USERS;
@@ -117,6 +118,7 @@ public final class Config
 		PACKET_FLOOD_DISCONNECT = networkConfigs.getBoolean("PacketFloodDisconnect", false);
 		PACKET_FLOOD_DROP = networkConfigs.getBoolean("PacketFloodDrop", false);
 		PACKET_FLOOD_LOGGED = networkConfigs.getBoolean("PacketFloodLogged", true);
+		FAILED_DECRYPTION_LOGGED = networkConfigs.getBoolean("FailedDecryptionLogged", true);
 		TCP_NO_DELAY = networkConfigs.getBoolean("TcpNoDelay", true);
 		CONNECTION_TIMEOUT = networkConfigs.getInt("ConnectionTimeout", 800);
 		MAXIMUM_ONLINE_USERS = networkConfigs.getInt("MaximumOnlineUsers", 2000);
