@@ -136,7 +136,7 @@ public class NetConfig
 	}
 	
 	/**
-	 * @return if dropped packets are logged.
+	 * @return if failed decryption is logged.
 	 */
 	public boolean isFailedDecryptionLogged()
 	{
@@ -144,7 +144,7 @@ public class NetConfig
 	}
 	
 	/**
-	 * Sets if dropped packets are logged.
+	 * Sets if failed decryption is logged.
 	 * @param failedDecryptionLogged
 	 */
 	public void setFailedDecryptionLogged(boolean failedDecryptionLogged)
