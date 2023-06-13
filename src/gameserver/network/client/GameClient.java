@@ -1,5 +1,8 @@
 package gameserver.network.client;
 
+import java.nio.ByteBuffer;
+import java.nio.channels.SocketChannel;
+
 import common.network.NetClient;
 import common.network.WritablePacket;
 import gameserver.actor.Player;
@@ -36,14 +39,23 @@ public class GameClient extends NetClient
 	
 	public void sendPacket(WritablePacket packet)
 	{
-		if ((getChannel() != null) && getChannel().isConnected())
+		final SocketChannel channel = getChannel();
+		if ((channel != null) && channel.isConnected())
 		{
-			try
+			final ByteBuffer byteBuffer = packet.getSendableByteBuffer();
+			if (byteBuffer != null)
 			{
-				getChannel().write(packet.getSendableByteBuffer());
-			}
-			catch (Exception ignored)
-			{
+				try
+				{
+					// Loop while there are remaining bytes in the buffer.
+					while (byteBuffer.hasRemaining())
+					{
+						channel.write(byteBuffer);
+					}
+				}
+				catch (Exception ignored)
+				{
+				}
 			}
 		}
 	}
