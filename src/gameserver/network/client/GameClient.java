@@ -47,10 +47,24 @@ public class GameClient extends NetClient
 			{
 				try
 				{
-					// Loop while there are remaining bytes in the buffer.
-					while (byteBuffer.hasRemaining())
+					// Send the packet data.
+					channel.write(byteBuffer);
+					
+					// Continue write if there are remaining bytes in the buffer.
+					if (byteBuffer.hasRemaining())
 					{
-						channel.write(byteBuffer);
+						int attempt = 0; // Keep it under 100 attempts (1000ms).
+						while (attempt++ < 100)
+						{
+							Thread.sleep(10);
+							channel.write(byteBuffer);
+							
+							// Check if write is complete.
+							if (!byteBuffer.hasRemaining())
+							{
+								break;
+							}
+						}
 					}
 				}
 				catch (Exception ignored)
