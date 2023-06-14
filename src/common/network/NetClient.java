@@ -166,6 +166,50 @@ public class NetClient
 	}
 	
 	/**
+	 * Sends a packet over the network using the default encryption.
+	 * @param packet The packet to send.
+	 */
+	public void sendPacket(WritablePacket packet)
+	{
+		if ((_channel == null) || !_channel.isConnected())
+		{
+			return;
+		}
+		
+		final ByteBuffer byteBuffer = packet.getSendableByteBuffer(getEncryption());
+		if (byteBuffer == null)
+		{
+			return;
+		}
+		
+		try
+		{
+			// Send the packet data.
+			_channel.write(byteBuffer);
+			
+			// Continue write if there are remaining bytes in the buffer.
+			if (byteBuffer.hasRemaining())
+			{
+				int attempt = 0; // Keep it under 100 attempts (1000ms).
+				while (attempt++ < 100)
+				{
+					Thread.sleep(10);
+					_channel.write(byteBuffer);
+					
+					// Check if write is complete.
+					if (!byteBuffer.hasRemaining())
+					{
+						break;
+					}
+				}
+			}
+		}
+		catch (Exception ignored)
+		{
+		}
+	}
+	
+	/**
 	 * @return the Encryption of this client.
 	 */
 	public EncryptionInterface getEncryption()
