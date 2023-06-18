@@ -103,8 +103,8 @@ public class ReadThread<E extends NetClient> implements Runnable
 							// Need to read two bytes to calculate size.
 							case 1:
 							{
-								int attempt = 0; // Keep it under 10 attempts (100ms).
-								COMPLETE_SIZE_READ: while ((attempt++ < 10) && (_sizeBuffer.position() < 2))
+								// Keep it under 10 attempts (100ms).
+								COMPLETE_SIZE_READ: for (int attempt = 0; attempt < 10; attempt++)
 								{
 									// Wait for pending data.
 									try
@@ -135,6 +135,7 @@ public class ReadThread<E extends NetClient> implements Runnable
 										{
 											_sizeBuffer.put(1, _pendingSizeBuffer, 0, 1);
 											_sizeBuffer.position(2);
+											break COMPLETE_SIZE_READ;
 										}
 									}
 								}
