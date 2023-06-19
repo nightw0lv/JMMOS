@@ -146,7 +146,7 @@ public class ReadablePacket
 	}
 	
 	/**
-	 * @return the number of unread byte size.
+	 * @return the number of unread bytes.
 	 */
 	public int getRemainingLength()
 	{
