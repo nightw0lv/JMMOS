@@ -68,6 +68,7 @@ public class GameServer
 		final NetServer<GameClient> server = new NetServer<>(Config.GAMESERVER_PORT, new PacketHandler(), GameClient::new);
 		server.setName(getClass().getSimpleName());
 		server.getNetConfig().setReadPoolSize(Config.CLIENT_READ_POOL_SIZE);
+		server.getNetConfig().setReadPoolSize(Config.CLIENT_SEND_POOL_SIZE);
 		server.getNetConfig().setExecutePoolSize(Config.CLIENT_EXECUTE_POOL_SIZE);
 		server.getNetConfig().setPacketQueueLimit(Config.PACKET_QUEUE_LIMIT);
 		server.getNetConfig().setPacketFloodDisconnect(Config.PACKET_FLOOD_DISCONNECT);

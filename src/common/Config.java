@@ -53,6 +53,7 @@ public final class Config
 	// --------------------------------------------------
 	public static int GAMESERVER_PORT;
 	public static int CLIENT_READ_POOL_SIZE;
+	public static int CLIENT_SEND_POOL_SIZE;
 	public static int CLIENT_EXECUTE_POOL_SIZE;
 	public static int PACKET_QUEUE_LIMIT;
 	public static boolean PACKET_FLOOD_DISCONNECT;
@@ -112,6 +113,7 @@ public final class Config
 		final ConfigReader networkConfigs = new ConfigReader(NETWORK_CONFIG_FILE);
 		GAMESERVER_PORT = networkConfigs.getInt("GameserverPort", 5055);
 		CLIENT_READ_POOL_SIZE = networkConfigs.getInt("ClientReadPoolSize", 100);
+		CLIENT_SEND_POOL_SIZE = networkConfigs.getInt("ClientSendPoolSize", 25);
 		CLIENT_EXECUTE_POOL_SIZE = networkConfigs.getInt("ClientExecutePoolSize", 50);
 		PACKET_QUEUE_LIMIT = networkConfigs.getInt("PacketQueueLimit", 20);
 		PACKET_FLOOD_DISCONNECT = networkConfigs.getBoolean("PacketFloodDisconnect", false);

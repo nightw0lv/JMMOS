@@ -226,18 +226,22 @@ public abstract class WritablePacket
 		// Generate sendable byte array.
 		if ((_sendableBytes == null /* Not processed */) || (encryption != null /* Encryption can change */))
 		{
-			// Trim array of data.
-			_sendableBytes = Arrays.copyOf(_data, _position);
-			
-			// Add size info at start (unsigned short - max size 65535).
-			final int position = _position - 2;
-			_sendableBytes[0] = (byte) (position & 0xff);
-			_sendableBytes[1] = (byte) ((position >> 8) & 0xffff);
-			
-			// Encrypt data.
-			if (encryption != null)
+			// Check if data was written.
+			if (_position > 2)
 			{
-				encryption.encrypt(_sendableBytes, 2, position);
+				// Trim array of data.
+				_sendableBytes = Arrays.copyOf(_data, _position);
+				
+				// Add size info at start (unsigned short - max size 65535).
+				final int position = _position - 2;
+				_sendableBytes[0] = (byte) (position & 0xff);
+				_sendableBytes[1] = (byte) ((position >> 8) & 0xffff);
+				
+				// Encrypt data.
+				if (encryption != null)
+				{
+					encryption.encrypt(_sendableBytes, 2, position);
+				}
 			}
 		}
 		

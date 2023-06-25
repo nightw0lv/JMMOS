@@ -13,6 +13,7 @@ public class ExecuteThread<E extends NetClient> implements Runnable
 {
 	private final Set<E> _pool;
 	private final PacketHandlerInterface<E> _packetHandler;
+	private boolean _idle;
 	
 	public ExecuteThread(Set<E> pool, PacketHandlerInterface<E> packetHandler)
 	{
@@ -28,6 +29,8 @@ public class ExecuteThread<E extends NetClient> implements Runnable
 			// No need to iterate when pool is empty.
 			if (!_pool.isEmpty())
 			{
+				_idle = true;
+				
 				// Iterate client pool.
 				ITERATE: for (E client : _pool)
 				{
@@ -37,7 +40,7 @@ public class ExecuteThread<E extends NetClient> implements Runnable
 						continue ITERATE;
 					}
 					
-					final byte[] data = client.getPacketData().poll();
+					final byte[] data = client.getReceivedData().poll();
 					if (data == null)
 					{
 						continue ITERATE;
@@ -61,16 +64,29 @@ public class ExecuteThread<E extends NetClient> implements Runnable
 						}
 					}
 					_packetHandler.handle(client, new ReadablePacket(data));
+					
+					_idle = false;
+				}
+				
+				// Prevent high CPU caused by repeatedly looping.
+				try
+				{
+					Thread.sleep(_idle ? 10 : 1);
+				}
+				catch (Exception ignored)
+				{
 				}
 			}
-			
-			// Prevent high CPU caused by repeatedly looping.
-			try
+			else // Remain idle for 1 second.
 			{
-				Thread.sleep(1);
-			}
-			catch (Exception ignored)
-			{
+				// Prevent high CPU caused by repeatedly looping.
+				try
+				{
+					Thread.sleep(1000);
+				}
+				catch (Exception ignored)
+				{
+				}
 			}
 		}
 	}
