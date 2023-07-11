@@ -1,8 +1,12 @@
 package common.network;
 
 import java.util.Set;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import common.managers.LogManager;
+import common.threads.ThreadProvider;
 
 /**
  * @author Pantelis Andrianakis
@@ -11,8 +15,14 @@ import common.managers.LogManager;
  */
 public class ExecuteThread<E extends NetClient> implements Runnable
 {
-	private final Set<E> _pool;
-	private final PacketHandlerInterface<E> _packetHandler;
+	// The core pool size for the ThreadPoolExecutor.
+	private static final int EXECUTOR_POOL_SIZE = 2;
+	
+	// ThreadPoolExecutor used to execute tasks concurrently, avoiding delays caused by waiting for a single client.
+	private final ThreadPoolExecutor _executor = new ThreadPoolExecutor(EXECUTOR_POOL_SIZE, Integer.MAX_VALUE, 1, TimeUnit.MINUTES, new LinkedBlockingQueue<>(), new ThreadProvider("ExecuteThread Executor", Thread.MAX_PRIORITY));
+	
+	protected final Set<E> _pool;
+	protected final PacketHandlerInterface<E> _packetHandler;
 	private boolean _idle;
 	
 	public ExecuteThread(Set<E> pool, PacketHandlerInterface<E> packetHandler)
@@ -40,30 +50,19 @@ public class ExecuteThread<E extends NetClient> implements Runnable
 						continue ITERATE;
 					}
 					
+					if (client.isRunning())
+					{
+						continue ITERATE;
+					}
+					
 					final byte[] data = client.getReceivedData().poll();
 					if (data == null)
 					{
 						continue ITERATE;
 					}
 					
-					if (client.getEncryption() != null)
-					{
-						try
-						{
-							client.getEncryption().decrypt(data, 0, data.length);
-						}
-						catch (Exception e)
-						{
-							if (client.getNetConfig().isFailedDecryptionLogged())
-							{
-								LogManager.log("ExecuteThread: Problem with " + client + " data decryption.");
-								LogManager.log(e);
-							}
-							client.disconnect();
-							continue ITERATE;
-						}
-					}
-					_packetHandler.handle(client, new ReadablePacket(data));
+					client.setRunning(true);
+					_executor.execute(new ExecuteTask(client, data));
 					
 					_idle = false;
 				}
@@ -88,6 +87,45 @@ public class ExecuteThread<E extends NetClient> implements Runnable
 				{
 				}
 			}
+		}
+	}
+	
+	private class ExecuteTask implements Runnable
+	{
+		private final E _client;
+		private final byte[] _data;
+		
+		public ExecuteTask(E client, byte[] data)
+		{
+			_client = client;
+			_data = data;
+		}
+		
+		@Override
+		public void run()
+		{
+			if (_client.getEncryption() != null)
+			{
+				try
+				{
+					_client.getEncryption().decrypt(_data, 0, _data.length);
+				}
+				catch (Exception e)
+				{
+					if (_client.getNetConfig().isFailedDecryptionLogged())
+					{
+						LogManager.log("ExecuteThread: Problem with " + _client + " data decryption.");
+						LogManager.log(e);
+					}
+					
+					_pool.remove(_client);
+					_client.disconnect();
+					return;
+				}
+			}
+			
+			_packetHandler.handle(_client, new ReadablePacket(_data));
+			_client.setRunning(false);
 		}
 	}
 }

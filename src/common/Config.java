@@ -76,7 +76,6 @@ public final class Config
 	// --------------------------------------------------
 	public static int SCHEDULED_THREAD_POOL_SIZE;
 	public static int INSTANT_THREAD_POOL_SIZE;
-	public static boolean THREADS_FOR_CLIENT_PACKETS;
 	
 	public static void load()
 	{
@@ -108,7 +107,6 @@ public final class Config
 		{
 			INSTANT_THREAD_POOL_SIZE = Runtime.getRuntime().availableProcessors() * 2;
 		}
-		THREADS_FOR_CLIENT_PACKETS = threadConfigs.getBoolean("ThreadsForClientPackets", true);
 		
 		final ConfigReader networkConfigs = new ConfigReader(NETWORK_CONFIG_FILE);
 		GAMESERVER_PORT = networkConfigs.getInt("GameserverPort", 5055);
