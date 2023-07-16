@@ -65,7 +65,6 @@ public class NetClient
 	 */
 	public void onDisconnection()
 	{
-		disconnect();
 	}
 	
 	/**
@@ -116,6 +115,9 @@ public class NetClient
 		{
 			_pendingData = null;
 		}
+		
+		// Client is disconnected.
+		onDisconnection();
 	}
 	
 	/**
